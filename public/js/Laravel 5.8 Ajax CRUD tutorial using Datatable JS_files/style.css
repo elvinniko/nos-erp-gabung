@@ -1,0 +1,169 @@
+body,html{
+	margin: 0;
+	padding: 0;
+	letter-spacing: 0.9px;
+}
+main{
+	width: 728px;
+	height: 90px;
+	position:relative; 
+	overflow:hidden; 
+	display:none;
+	box-sizing:border-box; 
+	border:1px solid #333333;
+	background: url(bg.jpg) no-repeat;
+}
+main a{
+	width: 728px;
+	height: 90px;
+}
+
+main a:hover #CtaBtn .cta-txt{
+	color:#0d66c2;
+}
+main a:hover #CtaBtn .cta-bg{
+	background-color:#FFFFFF;
+}
+
+.v-center:after {
+	position: relative !important;
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.v-center > div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.frames {
+	width: 728px;
+	height: 90px;
+}
+
+.cta-txt,
+.cta-bg{
+	-webkit-transition:all .5s ease;
+	-moz-transition:all .5s ease;
+	-ms-transition:all .5s ease;
+	-o-transition:all .5s ease;
+	transition:all .5s ease;
+}
+
+section, section div{
+	position: absolute;
+	pointer-events: none;
+}
+.logo{
+  bottom: -5px;
+  right: 14px;
+}
+
+#frame1{
+	background: url(bg.jpg) no-repeat;
+	width: 728px;
+	height: 90px;
+}
+
+#slides {
+	width: 728px;
+	height: 90px;
+	position: relative;
+	overflow: hidden;
+}
+
+.colors{
+	width: 928px;
+	height:140px;
+	top: -30px;
+	left: -940px;
+}
+
+.slide3{
+	background-color:#003188;
+}
+
+.slide2,
+.slide4 {
+	background-color: #5b1782;
+}
+
+.slide4{
+	left: -915px;
+}
+
+.slide1 {
+	background-color:#009CDE;
+	left: 714px;
+}
+
+/* ---------- DYNAMIC TEXT ---------- */
+
+/* HEADER SECTION */
+.header-wrap {
+	position: relative !important;
+	text-transform: uppercase;
+}
+
+.header-wrap * span {
+	color: #ffff00;
+}
+
+.header-wrap > div {
+	position: relative !important;
+
+	font-family: 'Conv_DharmaGothicE-BoldItalic';
+	font-size: 33px;
+	line-height: 0.8;
+	color: #FFF;
+}
+
+/* HEADER CLEARANCE */
+.header-wrap > div:nth-child(1) {
+	padding-left: 33px;
+}
+
+.header-wrap > div:nth-child(2) {
+	padding-left: 29px;
+	padding-top: 7px;
+}
+
+.header-wrap > div:nth-child(3) {
+	padding-left: 25px;
+	padding-top: 7px;
+}
+
+/* ------------ */
+
+/* CTA SECTION */
+.cta {
+	position: relative !important;
+	margin-left: 16px;
+}
+
+.cta-txt {
+	position: relative !important;
+	display: inline-block;
+	padding: 9px 23px;
+	text-align: center;
+
+	font-family: 'Conv_PayPalSansBig-Medium';
+	font-size: 12px;
+	line-height: 0.78;
+    letter-spacing: -0.2px;
+	color: #FFFFFF;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.cta-bg {
+	width: 100%;
+	height: 100%;
+	background-color: #0d66c2;
+	border-radius: 10px;
+}
+/* ------------ */

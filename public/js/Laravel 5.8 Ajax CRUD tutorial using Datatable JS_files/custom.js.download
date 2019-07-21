@@ -1,0 +1,46 @@
+$(document).ready(function(){
+
+$(document).on('click', 'a[href^="#"]', function(e) {
+      // target element id
+      var id = $(this).attr('href');
+
+      // target element
+      var $id = $(id);
+      if ($id.length === 0) {
+          return;
+      }
+
+      // prevent standard hash navigation (avoid blinking in IE)
+      e.preventDefault();
+
+      // top position relative to the document
+      var pos = $id.offset().top;
+
+      // animated top scrolling
+      $('body, html').animate({scrollTop: pos});
+  });
+
+    $('.input__field--search').focusin(function(){
+        $('.input-bg').css('right','-85%');
+    });
+    $('.input__field--search').focusout(function(){
+        $('.input-bg').css('right','0%');
+    });
+/*
+    $('body').append('<div id="toTopImg" style="display:none"><span class="glyphicon glyphicon-arrow-up"></span></div>');
+              $(window).scroll(function () {
+                  if ($(this).scrollTop() != 0) {
+                      $('#toTopImg').fadeIn();
+                  } else {
+                      $('#toTopImg').fadeOut();
+                  }
+              }); 
+          $('#toTopImg').click(function(){
+              $("html, body").animate({ scrollTop: 0 }, 600);
+              return false;
+          });
+*/
+    $(".advertisement-main").sticky({ topSpacing: 0 });
+
+     
+});
