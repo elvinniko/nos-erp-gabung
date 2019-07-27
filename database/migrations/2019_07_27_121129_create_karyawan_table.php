@@ -24,9 +24,9 @@ class CreateKaryawanTable extends Migration
             $table->string('alamat',100);
             $table->string('nomor_telepon');
             $table->text('pendidikan_terakhir');
-            $table->varchar('kode_jabatan');
+            $table->string('kode_jabatan');
             //nanti ada table jabatan
-            $table->varchar('kode_cabang');
+            $table->string('kode_cabang');
             $table->integer('gaji_pokok');
             $table->timestamps();
         });
