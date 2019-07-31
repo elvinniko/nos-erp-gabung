@@ -14,10 +14,11 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->string('KodeItem');
+            $table->string('KodeItem')->primary();
             $table->string('KodeKategori');
             $table->string('NamaItem');
             $table->string('Alias');
+            $table->enum('jenisitem',['bahanbaku','bahanjadi']);
             $table->string('Keterangan');
             $table->string('Status');
             $table->string('KodeUser');
