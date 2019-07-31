@@ -95,10 +95,11 @@ class PemesananPenjualanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
+
         $this->validate($request, [
             'KodeSO' => 'required',
-            'KodePO' => 'required',
             'Tanggal' => 'required',
             'TanggalKirim' => 'required',
             'Expired' => 'required',
@@ -107,12 +108,10 @@ class PemesananPenjualanController extends Controller
             'KodePelanggan' => 'required',
             'Term' => 'required',
         ]);
-
         DB::table('pemesananpenjualans')->insert([
             'KodeSO' => $request->KodeSO,
-            'KodePO' => $request->KodePO,
             'Tanggal' => $request->Tanggal,
-            'TanggalKirim' => $request->TanggalKirim,
+            'tgl_kirim' => $request->TanggalKirim,
             'Expired' => $request->Expired,
             'KodeLokasi' => $request->KodeLokasi,
             'KodeMataUang' => $request->KodeMataUang,
@@ -121,6 +120,15 @@ class PemesananPenjualanController extends Controller
             'Keterangan' => $request->Keterangan,
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
+            'Total' => 0,
+            'PPN' => 0,
+            'NilaiPPN'=>0,
+            'Printed'=>0,
+            'Diskon'=>0,
+            'NilaiDiskon'=>0,
+            'Subtotal'=>0,
+            'KodeSales'=>0,
+            'POPelanggan'=>0,
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
@@ -178,5 +186,11 @@ class PemesananPenjualanController extends Controller
     {
         DB::table('pemesananpenjualans')->where('KodeSO', $id)->delete();
         return redirect('/sopenjualan');
+    }
+
+    public function select(Request $request, $id)
+    {
+        $items = DB::table('items')->get();
+        return view('pemesananpenjualan.select', compact('id','items'));
     }
 }

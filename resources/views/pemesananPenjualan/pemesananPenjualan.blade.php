@@ -39,7 +39,7 @@
                         <td>{{ $p->KodePelanggan}}</td>
                         <td>{{ $p->Term }}</td>
                         <td>
-                            <a href="/sopenjualan/konfirm/{{ $p->KodeSO}}" class="btn-sm btn btn-warning">Konfirmasi</a>
+                            <a href="/sopenjualan/select/{{ $p->KodeSO}}" class="btn-sm btn btn-warning">pilih barang</a>
                         </td>
                         <td>
                           <a href="/sopenjualan/show/{{ $p->KodeSO }}" class="btn-sm btn btn-primary">

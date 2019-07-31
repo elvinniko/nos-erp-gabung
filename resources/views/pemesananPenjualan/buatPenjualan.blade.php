@@ -17,9 +17,7 @@
                         <div class="form-row">
                             <!-- column 1 -->
                             <div class="form-group col-md-3">
-                                <div class="form-group">
-                                    <input type="hidden" class="form-control" name="KodeSO" value="{{$newID}}">
-                                </div>
+                                <input type="hidden" class="form-control" name="KodeSO" value="{{$newID}}">
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
                                     <input type="date" class="form-control" name="Tanggal" id="inputDate">
@@ -41,14 +39,6 @@
                             <div class="form-group col-md-1"></div>
                             <!-- column 2 -->
                             <div class="form-group col-md-4">
-                                <div class="form-group">
-                                    <label for="inputPO">Kode PO</label>
-                                    <select class="form-control" name="KodePO" id="inputPO" placeholder="Pilih kode PO">
-                                        @foreach($pemesananpembelian as $pp)
-                                        <option value="{{$pp->KodePO}}">{{$pp->KodePO}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label for="inputMatauang">Mata Uang</label>
                                     <select class="form-control" name="KodeMataUang" id="inputMatauang" placeholder="Pilih mata uang">

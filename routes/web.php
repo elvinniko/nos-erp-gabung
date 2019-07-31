@@ -161,7 +161,7 @@ Route::get('/sopenjualan/create', 'PemesananPenjualanController@create');
 Route::get('/sopenjualan/konfirm','PemesananPenjualanController@konfirm');
 Route::get('/sopenjualan/show/{id}','PemesananPenjualanController@show');
 Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
-
+Route::get('/sopenjualan/select/{id}', 'PemesananPenjualanController@select');
 
 //ROUTE STOK
 Route::get('/stokmasuk','StokMasukController@index');

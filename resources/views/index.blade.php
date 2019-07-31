@@ -75,7 +75,7 @@
                   <ul class="nav child_menu">
                     <li><a>Pemesanan penjualan<span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
-                        <li><a href="{{ url('/pemesananPenjualan')}}">S.O Penjualan</a></li>
+                        <li><a href="{{ url('/sopenjualan')}}">S.O Penjualan</a></li>
                         <li><a href="{{ url('/konfirmasipemesananPenjualan') }}">S.O Konfirmasi</a></li>
                         <li><a href="{{ url('/dikirimpemesananPenjualan') }}">S.O Dikirim</a></li>
                         <li><a href="{{ url('/batalpemesananPenjualan') }}">S.O Batal</a></li>
