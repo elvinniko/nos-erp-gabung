@@ -1,5 +1,25 @@
 @extends('index')
 @section('content')
+<style type="text/css">
+    form{
+        margin: 20px 0;
+    }
+    form input, button{
+        padding: 5px;
+    }
+    table{
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+    table, th, td{
+        border: 1px solid #cdcdcd;
+    }
+    table th, table td{
+        padding: 10px;
+        text-align: left;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -34,6 +54,10 @@
                                     <label for="inputTerm">Term</label>
                                     <input type="text" class="form-control" name="Term" id="inputTerm" placeholder="/hari">
                                 </div>
+                                <div class="form-group">
+                                    <label for="inputPelanggan">P.O. Customer</label>
+                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="">
+                                </div>
                             </div>
                             <!-- pembatas -->
                             <div class="form-group col-md-1"></div>
@@ -63,6 +87,17 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="inputPelanggan">Diskon</label>
+                                    <input type="text" class="form-control" name="diskon" id="inputBerlaku" placeholder="%">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPelanggan">PPn</label>
+                                    <select class="form-control" name="ppn" id="ppn">
+                                        <option value="ya">Ya</option>
+                                        <option value="tidak">Tidak</option>
+                                    </select>
+                                </div>
                             </div>
                             <!-- pembatas -->
                             <div class="form-group col-md-1"></div>
@@ -71,7 +106,60 @@
                                 <label for="inputKeterangan">Keterangan</label>
                                 <textarea class="form-control" name="Keterangan" id="inputKeterangan" rows="5"></textarea>
                                 <br><br>
-                                <button type="submit" class="btn btn-success">Simpan</button>
+                                
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <a href="#" class="btn btn-success" onclick="addrow()">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>Tambah Item
+                                </a>
+                                <input type="hidden" value="1" id="totalItem">
+                                <table id="items">
+                                    <tr>
+                                        <td>nama barang</td>
+                                        <td>qty</td>
+                                        <td>satuan</td>
+                                        <td>harga</td>
+                                        <td>keterangan</td>
+                                        <td>total</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="rowinput">
+                                        <td>
+                                            <select name="item[]" class="form-control item1">
+                                                @foreach($item as $itemData)
+                                                    <option value="{{$itemData->KodeItem}}">{{$itemData->NamaItem}}</option>
+                                                    <input type="hidden" id="{{$itemData->KodeItem}}" value="{{$itemData->price}}">
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" onchange="qty(1)" name="qty[]" class="form-control qty1" required="" value="0">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control satuan1" required="" value="0">
+                                        </td>
+                                        <td>
+                                            <input readonly="" type="text" name="price[]" class="form-control price1" required="" value="0">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control keterangan1" required="" value="0">
+                                        </td>
+                                        <td>
+                                            <input readonly="" type="text" name="total[]" class="form-control total1" required="" value="0">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                                <div class="col-md-9">
+                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                    <button type="submit" class="btn btn-danger">Batal</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="inputPelanggan">Subtotal</label>
+                                    <input type="text" class="form-control" name="diskon" id="inputBerlaku" placeholder="">
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -80,4 +168,33 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+    function qty(int){
+        var qty =$(".qty"+int).val();
+        var item =$(".item"+int).val();
+        var price =$("#"+item).val();
+        $(".price"+int).val(price);
+        $(".total"+int).val(price*qty);
+    }
+
+    function addrow(){
+        $("#totalItem").val(parseInt($("#totalItem").val())+1);
+        var count =$("#totalItem").val();
+        var markup = $(".rowinput").html();
+        var res = "<tr class='tambah"+count+"'>"+markup+"</tr>";
+        res = res.replace("qty1", "qty"+count);
+        res = res.replace("item1", "item"+count);
+        res = res.replace("price1", "price"+count);
+        res = res.replace("total1", "total"+count);
+        res = res.replace("qty(1)", "qty("+count+")");
+        res = res.replace("<td></td>", '<td><i onclick="del('+count+')" class="fa fa-trash"></i></td>');
+        $("#items tbody").append(res);
+    }
+
+    function del(int){
+        $(".tambah"+int).remove();
+    }
+</script>
 @endsection
