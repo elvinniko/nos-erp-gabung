@@ -14,7 +14,7 @@ class CreateKaryawanTable extends Migration
     public function up()
     {
         Schema::create('karyawan', function (Blueprint $table) {
-            $table->dropPrimary('nomor_induk',10);
+            $table->string('nomor_induk',10)->primary();
             $table->string('name',50);
             $table->string('tempat_lahir',20);
             $table->date('tanggal_lahir');

@@ -16,8 +16,10 @@ class DataGudangController extends Controller
      */
     public function index()
     {
-        $lokasi = DB::table('lokasis')->get();
-        return view('master.dataGudang', ['lokasi' => $lokasi]);
+        // $lokasi = DB::table('lokasis')->get();
+        // return view('master.dataGudang', ['lokasi' => $lokasi]);
+        $lokasi = lokasi::where('Status','OPN')->get();
+        return view('master.dataGudang',['lokasi' => $lokasi]);
         //return view('master.dataGudang');
 
         // $lokasi = lokasi::all();
@@ -159,9 +161,12 @@ class DataGudangController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('lokasis')->where('KodeLokasi',$id)->delete();
+        // DB::table('lokasis')->where('KodeLokasi',$id)->delete();
+        // return redirect('/datagudang');
+        $lokasi = lokasi::find($id);
+        $lokasi->Status = 'DEL';
+        $lokasi->save();
         return redirect('/datagudang');
-
         // $lokasi = lokasi::find($id);
         // $lokasi->delete();
         // return redirect('/datagudang');

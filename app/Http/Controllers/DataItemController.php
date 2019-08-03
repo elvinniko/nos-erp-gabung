@@ -72,7 +72,7 @@ class DataItemController extends Controller
             'KodeItem' => $request->KodeItem,
             'KodeKategori' => $request->KodeKategori,
             'NamaItem' => $request->NamaItem,
-            'Jenis_item' => $request->Jenis_item,
+            'jenisitem' => $request->jenisitem,
             'Alias' => $request->Alias,
             'Keterangan' => $request->Keterangan,
             'Status' => 'OPN',
@@ -84,14 +84,14 @@ class DataItemController extends Controller
             // 'HargaGrosir' => $request->HargaGrosir
         ]);
 
-        DB::table('itemkonversis')->insert([
-            // 'KodeItem' => $request->KodeItem,
-            'KodeSatuan' => $request->KodeSatuan,
-            'Konversi' => $request->Konversi,
-            'HargaJual' => $request->HargaJual,
-            'HargaBeli' => $request->HargaBeli,
-            'HargaGrosir' => $request->HargaGrosir
-        ]);
+        // DB::table('itemkonversis')->insert([
+        //     'KodeItem' => $request->KodeItem,
+        //     'KodeSatuan' => $request->KodeSatuan,
+        //     'Konversi' => $request->Konversi,
+        //     'HargaJual' => $request->HargaJual,
+        //     'HargaBeli' => $request->HargaBeli,
+        //     'HargaGrosir' => $request->HargaGrosir
+        // ]);
 
         return redirect('/dataitem');
     }

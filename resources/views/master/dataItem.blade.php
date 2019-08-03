@@ -3,14 +3,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
+        <div class="x_panel">
+          <div class="x_header">
             <h1>Data Item</h1>
             <a href="{{ url('/dataitem/create')}}" class="btn btn-success">
               <i class="fa fa-plus-square" aria-hidden="true"></i>Tambah Item
             </a>
           </div>
-          <div class="card-body">
+          <div class="x_body">
             <table class="table table-light">
               <thead class="thead-light">
                 <tr>
@@ -29,7 +29,7 @@
                       <td>{{ $item->KodeItem }}</td>
                       <td>{{ $item->KodeKategori }}</td>
                       <td>{{ $item->NamaItem }}</td>
-                      <td>{{ $item->Jenis_item}}</td>
+                      <td>{{ $item->jenisitem }}</td>
                       {{-- <td>{{ $item->KodeSatuan }}</td> --}}
                       <td>{{ $item->Status}}</td>
                       <td>

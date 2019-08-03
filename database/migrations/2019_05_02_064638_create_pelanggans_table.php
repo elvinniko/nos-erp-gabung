@@ -14,17 +14,17 @@ class CreatePelanggansTable extends Migration
     public function up()
     {
         Schema::create('pelanggans', function (Blueprint $table) {
-            $table->string('KodePelanggan');
+            $table->string('KodePelanggan')->primary();
             $table->string('NamaPelanggan');
             $table->string('Kontak');
             $table->string('Handphone');
             $table->string('Email');
             $table->string('NIK');
-            $table->double('LimitPiutang');
-            $table->double('Diskon');
+            $table->double('LimitPiutang')->nullable();
+            $table->double('Diskon')->nullable();
             $table->string('Status');
-            $table->string('KodeLokasi');
-            $table->string('KodeUser');
+            $table->string('KodeLokasi')->nullable();
+            $table->string('KodeUser')->nullable();
             $table->timestamps();
         });
     }

@@ -15,7 +15,8 @@ class DataSatuanController extends Controller
      */
     public function index()
     {
-        $satuan = DB::table('satuans')->get();
+        //$satuan = DB::table('satuans')->get();
+        $satuan = satuan::where('Status','OPN')->get();
         return view('master.dataSatuan', ['satuan' => $satuan]);
 
         // $satuan = satuan::all();
@@ -48,16 +49,18 @@ class DataSatuanController extends Controller
         DB::table('satuans')->insert([
             'KodeSatuan' => $request->KodeSatuan,
             'NamaSatuan' => $request->NamaSatuan,
+            'Status' => 'OPN',
+            'KodeUser' => 'Admin',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now()
         ]);
         return redirect('/datasatuan');
-     
+
         // satuan::create([
         //     'KodeSatuan' => $request->KodeSatuan,
         //     'NamaSatuan' => $request->NamaSatuan
         // ]);
-    
+
         // return redirect('/datasatuan');
     }
 
@@ -105,7 +108,7 @@ class DataSatuanController extends Controller
             'updated_at' => \Carbon\Carbon::now()
         ]);
         return redirect('/datasatuan');
-        
+
         // $satuan = satuan::find($id);
         // $satuan->NamaSatuan = $request->NamaSatuan;
         // $satuan->save();
@@ -120,9 +123,10 @@ class DataSatuanController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('satuans')->where('KodeSatuan',$id)->delete();
+        $satuan = satuan::find($id);
+        $satuan->Status = 'DEL';
+        $satuan->save();
         return redirect('/datasatuan');
-
         // $satuan = satuan::find($id);
         // $satuan->delete();
         // return redirect('/datasatuan');

@@ -30,11 +30,11 @@
                         <div class="form-group">
                             <label for="">Jenis Item</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Jenis_item" id="bb" value="BahanBaku">
+                                <input class="form-check-input" type="radio" name="jenisitem" id="bb" value="BahanBaku">
                                 <label class="form-check-label" for="bb">Bahan Baku</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Jenis_item" id="bahanjadi" value="BahanJadi">
+                                <input class="form-check-input" type="radio" name="jenisitem" id="bahanjadi" value="BahanJadi">
                                 <label class="form-check-label" for="bahanjadi">Bahan Jadi</label>
                             </div>
                         </div>

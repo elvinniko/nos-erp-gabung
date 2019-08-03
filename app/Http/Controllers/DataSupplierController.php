@@ -15,7 +15,8 @@ class DataSupplierController extends Controller
      */
     public function index()
     {
-        $supplier = DB::table('suppliers')->get();
+        //$supplier = DB::table('suppliers')->get();
+        $supplier = supplier::where('Status','OPN')->get();
         return view('master.dataSupplier', ['supplier' => $supplier]);
 
         // $supplier = supplier::all();
@@ -30,7 +31,7 @@ class DataSupplierController extends Controller
     public function create()
     {
         $last_id = DB::select('SELECT * FROM suppliers ORDER BY KodeSupplier DESC LIMIT 1');
-        
+
         //Auto generate ID
         if($last_id == null) {
             $newID = "SUP-001";
@@ -68,11 +69,12 @@ class DataSupplierController extends Controller
             'Kontak' => $request->Kontak,
             'Handphone' => $request->Handphone,
             'Alamat' => $request->Alamat,
+            'Status' => 'OPN',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now()
         ]);
         return redirect('/datasupplier');
-     
+
         // supplier::create([
         //     'KodeSupplier' => $request->KodeSupplier,
         //     'NamaSupplier' => $request->NamaSupplier,
@@ -80,7 +82,7 @@ class DataSupplierController extends Controller
         //     'Handphone' => $request->Handphone,
         //     'Alamat' => $request->Alamat
         // ]);
-    
+
         // return redirect('/datasupplier');
     }
 
@@ -134,7 +136,7 @@ class DataSupplierController extends Controller
             'updated_at' => \Carbon\Carbon::now()
         ]);
         return redirect('/datasupplier');
-        
+
         // $supplier = supplier::find($id);
         // $supplier->NamaSupplier = $request->NamaSupplier;
         // $supplier->Kontak = $request->Kontak;

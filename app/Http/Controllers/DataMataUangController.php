@@ -130,7 +130,11 @@ class DataMataUangController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('matauangs')->where('KodeMataUang',$id)->delete();
+        // DB::table('matauangs')->where('KodeMataUang',$id)->delete();
+        // return redirect('/datamatauang');
+        $matauang = matauang::find($id);
+        $matauang->Status = 'DEL';
+        $matauang->save();
         return redirect('/datamatauang');
 
         // $matauang = matauang::find($id);
@@ -138,14 +142,14 @@ class DataMataUangController extends Controller
         // return redirect('/datamatauang');
     }
 
-    public function lihat(Request $request)
-    {
-        $mata = DB::table('matauangs')->select('created_at')->get();
-        // echo $mata;
-        // hasilnya berupa array
-        // {{ "created_at" 2019-06-18 }}
-        $pis = explode('-', $mata);
-        echo substr($pis[0], 18, 2);
-        //echo $mata;
-    }
+    // public function lihat(Request $request)
+    // {
+    //     $mata = DB::table('matauangs')->select('created_at')->get();
+    //     // echo $mata;
+    //     // hasilnya berupa array
+    //     // {{ "created_at" 2019-06-18 }}
+    //     $pis = explode('-', $mata);
+    //     echo substr($pis[0], 18, 2);
+    //     //echo $mata;
+    // }
 }

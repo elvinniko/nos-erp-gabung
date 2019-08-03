@@ -3,8 +3,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
+        <div class="x_panel">
+          <div class="x_header">
             <h1>Data Gudang</h1>
             <br>
             <a href="/datagudang/create" class="btn btn-success">
@@ -12,7 +12,7 @@
               Tambah Gudang
             </a>
           </div>
-          <div class="card-body">
+          <div class="x_body">
             <table class="table table-light" id="gudang_table">
               <thead class="thead-light">
                 <tr>
@@ -29,9 +29,9 @@
                     <td>{{$lok->NamaLokasi}}</td>
                     <td>{{$lok->Tipe}}</td>
                     <td>
-                      <a href="/datagudang/show/{{ $lok->KodeLokasi }}" class="btn-xs btn btn-primary">
+                      {{-- <a href="/datagudang/show/{{ $lok->KodeLokasi }}" class="btn-xs btn btn-primary">
                         <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;Lihat
-                      </a>
+                      </a> --}}
                       <a href="/datagudang/edit/{{ $lok->KodeLokasi }}" class="btn-xs btn btn-warning">
                         <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit
                       </a>
