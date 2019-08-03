@@ -3,15 +3,15 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
+        <div class="x_panel">
+          <div class="x_header">
             <h1>Data Klasifikasi</h1>
             <a href="/dataklasifikasi/create" class="btn btn-success">
               <i class="fa fa-plus-square" aria-hidden="true"></i>
               Tambah Klasifikasi
             </a>
           </div>
-          <div class="card-body">
+          <div class="x_body">
             <table class="table table-light">
               <thead class="thead-light">
                 <tr>

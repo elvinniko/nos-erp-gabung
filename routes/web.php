@@ -101,8 +101,9 @@ Route::post('/datagudang/update/{id}', 'DataGudangController@update');
 Route::get('/datagudang/destroy/{id}', 'DataGudangController@destroy');
 
 //route Data pelanggan
-Route::post('/datapelanggan/update/{id}', 'DataPelanggan@update');
-Route::get('/datapelanggan/destroy/{id}', 'DataPelanggan@destroy');
+Route::get('/datapelanggan/edit/{id}','DataPelangganController@edit');
+Route::post('/datapelanggan/update/{id}', 'DataPelangganController@update');
+Route::get('/datapelanggan/destroy/{id}', 'DataPelangganController@destroy');
 
 //route dataklasifikasi
 Route::get('/dataklasifikasi/store', 'DataKlasifikasiController@store');

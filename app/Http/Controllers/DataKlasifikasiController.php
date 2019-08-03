@@ -15,7 +15,8 @@ class DataKlasifikasiController extends Controller
      */
     public function index()
     {
-        $kategori = DB::table('kategoris')->where('Status',"=",'OPN')->get();
+        // $kategori = DB::table('kategoris')->where('Status',"=",'OPN')->get();
+        $kategori = kategori::where('Status','OPN')->get();
         return view('master.dataKlasifikasi', ['kategori' => $kategori]);
 
         // $kategori = kategori::all();
@@ -144,9 +145,12 @@ class DataKlasifikasiController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('kategoris')->where('KodeKategoris',$id)->delete();
+        // DB::table('kategoris')->where('KodeKategoris',$id)->delete();
+        // return redirect('/dataklasifikasi');
+        $kategori = kategori::find($id);
+        $kategori->Status = 'DEL';
+        $kategori->save();
         return redirect('/dataklasifikasi');
-
         // $kategori = kategori::find($id);
         // $kategori->delete();
         // return redirect('/dataklasifikasi');

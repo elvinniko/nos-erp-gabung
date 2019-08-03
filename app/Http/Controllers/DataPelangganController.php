@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
 use App\pelanggan;
+use DB;
 
 class DataPelangganController extends Controller
 {
@@ -16,7 +16,8 @@ class DataPelangganController extends Controller
     public function index()
     {
         $pelanggan = pelanggan::latest()->paginate(10);
-        return view('master.dataPelanggan', compact('pelanggan'));
+        //$pelanggan = pelanggan::where('Status','OPN')->get();
+        return view('master.dataPelanggan', ['pelanggan'=> $pelanggan]);
     }
 
     /**
@@ -57,6 +58,7 @@ class DataPelangganController extends Controller
         $pelanggan->Handphone = $request->input('Handphone');
         $pelanggan->Email = $request->input('Email');
         $pelanggan->NIK = $request->input('NIK');
+        $pelanggan->Status = "OPN";
         $pelanggan->save();
         return redirect('/datapelanggan');
     }
@@ -122,8 +124,12 @@ class DataPelangganController extends Controller
      */
     public function destroy($id)
     {
+        // $pelanggan = pelanggan::find($id);
+        // $pelanggan->delete();
         $pelanggan = pelanggan::find($id);
-        $pelanggan->delete();
-        return redirect()->route('datapelanggan.index');
+        $pelanggan->Status = 'DEL';
+        $pelanggan->save();
+        return redirect('/datapelanggan');
+        //return redirect()->route('datapelanggan.index');
     }
 }

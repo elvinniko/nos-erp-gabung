@@ -101,7 +101,7 @@
   </head>
 
   <body class="login">
-    <div>
+    <div class="">
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
 

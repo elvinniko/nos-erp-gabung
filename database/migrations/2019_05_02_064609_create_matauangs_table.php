@@ -14,7 +14,7 @@ class CreateMatauangsTable extends Migration
     public function up()
     {
         Schema::create('matauangs', function (Blueprint $table) {
-            $table->string('KodeMataUang');
+            $table->string('KodeMataUang')->primary();
             $table->string('NamaMataUang');
             $table->double('Nilai');
             $table->string('Status');

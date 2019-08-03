@@ -14,7 +14,7 @@ class CreateSatuansTable extends Migration
     public function up()
     {
         Schema::create('satuans', function (Blueprint $table) {
-            $table->string('KodeSatuan');
+            $table->string('KodeSatuan')->primary();
             $table->string('NamaSatuan');
             $table->string('Status');
             $table->string('KodeUser');

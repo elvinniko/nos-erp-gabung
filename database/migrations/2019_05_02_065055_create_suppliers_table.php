@@ -14,19 +14,19 @@ class CreateSuppliersTable extends Migration
     public function up()
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->string('KodeSupplier');
+            $table->string('KodeSupplier')->primary();
             $table->string('NamaSupplier');
             $table->string('Kontak');
             $table->string('Handphone');
-            $table->string('Email');
-            $table->string('NIK');
+            $table->string('Email')->nullable();
+            $table->string('NIK')->nullable();
             $table->string('Status');
-            $table->string('KodeLokasi');
-            $table->string('KodeUser');
+            $table->string('KodeLokasi')->nullable();
+            $table->string('KodeUser')->nullable();
             $table->string('Alamat');
-            $table->string('Kota');
-            $table->string('Provinsi');
-            $table->string('Negara');
+            $table->string('Kota')->nullable();
+            $table->string('Provinsi')->nullable();
+            $table->string('Negara')->nullable();
             $table->timestamps();
         });
     }
