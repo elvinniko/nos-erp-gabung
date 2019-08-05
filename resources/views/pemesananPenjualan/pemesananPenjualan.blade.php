@@ -24,7 +24,6 @@
                     <th>Gudang</th>
                     <th>Pelanggan</th>
                     <th>Term</th>
-                    <th>Item</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -32,21 +31,16 @@
                     <tr>
                         <td>{{ $p->KodeSO}}</td>
                         <td>{{ $p->Tanggal}}</td>
-                        <td>{{ $p->TanggalKirim}}</td>
+                        <td>{{ $p->tgl_kirim}}</td>
                         <td>{{ $p->Expired }}</td>
                         <td>{{ $p->KodeMataUang}}</td>
                         <td>{{ $p->KodeLokasi}}</td>
                         <td>{{ $p->KodePelanggan}}</td>
-                        <td>{{ $p->Term }}</td>
-                        <td>
-                            <a href="/sopenjualan/select/{{ $p->KodeSO}}" class="btn-sm btn btn-warning">pilih barang</a>
-                        </td>
+                        <td>{{ $p->term }}</td>
                         <td>
                           <a href="/sopenjualan/show/{{ $p->KodeSO }}" class="btn-sm btn btn-primary">
                             <i class="fa fa-eye" aria-hidden="true"></i>
                           </a>
-                        </td>
-                        <td>
                           <a href="/sopenjualan/edit/{{ $p->KodeSO }}" class="btn-sm btn btn-warning">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                           </a>

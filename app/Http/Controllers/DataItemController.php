@@ -18,7 +18,7 @@ class DataItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         // $items = item::latest()->paginate(5);
         $items = item::leftJoin('itemkonversis','itemkonversis.KodeItem','=','items.KodeItem')
         ->select('items.*','itemkonversis.KodeSatuan')
@@ -35,7 +35,7 @@ class DataItemController extends Controller
     public function create()
     {
         $last_id = DB::select('SELECT * FROM items ORDER BY KodeItem DESC LIMIT 1');
-
+ 
         //Auto generate ID
         if($last_id == null) {
             $newID = "BRS000001";
@@ -60,16 +60,21 @@ class DataItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // $request->validate([
-        //     'KodeItem' => 'required',
-        //     'KodeKategori' => 'required',
-        //     'NamaItem' => 'required',
-        //     'Status' => 'required'
-        // ]);
-        // item::create($request->all());
+    {   
+        $lastID = DB::select("SELECT count(1) as jml FROM items where KodeKategori='".$request->KodeKategori."' ")[0]->jml;
+        $lastID +=1;
+        $kodeAwal = DB::select("SELECT KodeItemAwal as jml FROM kategoris where KodeKategori='".$request->KodeKategori."' group by KodeItemAwal")[0]->jml;
+        $kodeAwal .="-";
+        if($lastID>100){
+            $kodeAwal .=$lastID;
+        }else if($lastID>10){
+            $kodeAwal .="0".$lastID;
+        }else{
+            $kodeAwal .="00".$lastID;
+        }
+        
         DB::table('items')->insert([
-            'KodeItem' => $request->KodeItem,
+            'KodeItem' => $kodeAwal,
             'KodeKategori' => $request->KodeKategori,
             'NamaItem' => $request->NamaItem,
             'jenisitem' => $request->jenisitem,
@@ -77,22 +82,20 @@ class DataItemController extends Controller
             'Keterangan' => $request->Keterangan,
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
-            // 'KodeSatuan' => $request->KodeSatuan,
-            // 'Konversi' => $request->Konversi,
-            // 'HargaJual' => $request->HargaJual,
-            // 'HargaBeli' => $request->HargaBeli,
-            // 'HargaGrosir' => $request->HargaGrosir
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
         ]);
 
-        // DB::table('itemkonversis')->insert([
-        //     'KodeItem' => $request->KodeItem,
-        //     'KodeSatuan' => $request->KodeSatuan,
-        //     'Konversi' => $request->Konversi,
-        //     'HargaJual' => $request->HargaJual,
-        //     'HargaBeli' => $request->HargaBeli,
-        //     'HargaGrosir' => $request->HargaGrosir
-        // ]);
-
+        DB::table('itemkonversis')->insert([
+            'KodeItem' => $kodeAwal,
+            'KodeSatuan' => $request->KodeSatuan,
+            'Konversi' => $request->Konversi,
+            'HargaJual' => $request->HargaJual,
+            'HargaBeli' => $request->HargaBeli,
+            'HargaGrosir' => $request->HargaGrosir,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
         return redirect('/dataitem');
     }
 

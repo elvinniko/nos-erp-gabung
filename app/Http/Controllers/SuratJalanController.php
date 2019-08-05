@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\suratjalan;
+use App\pemesananpenjualan;
 
 class SuratJalanController extends Controller
 {
@@ -24,9 +25,19 @@ class SuratJalanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('suratJalan.buatSuratJalan');
+        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
+        if ($id==0){
+            $init = $pemesananpenjualan->first();
+        }else{
+            $init = pemesananpenjualan::all()->where('KodeSO',$id)->first();
+        }
+        $pelanggans = DB::table('pelanggans')->get();
+        $lokasis = DB::table('lokasis')->get();
+        if($init!=null){
+        }
+        return view('suratJalan.buatSuratJalan', compact('pemesananpenjualan', 'id', 'pelanggans', 'lokasis'));
     }
 
     /**

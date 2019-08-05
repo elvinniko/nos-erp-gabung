@@ -11,15 +11,11 @@
                     <form action="{{ url('/dataitem/store')}}" class="form-horizontal form-label-left input_mask" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="KodeItem">Kode Item</label>
-                            <input id="KodeItem" readonly value="{{ $newID }}" class="form-control" type="text" name="KodeItem" placeholder="Kode Item">
-                        </div>
-                        <div class="form-group">
                             <label for="">Kode Kategori</label>
                             <select class="form-control" name="KodeKategori" id="KodeKategori">
                                 <option value=""> --Pilih Kode Kategori --</option>
                                 @foreach ($kategori as $k)
-                                    <option value="{{ $k->KodeKategori}}">{{ $k->KodeKategori }}</option>
+                                    <option value="{{ $k->KodeKategori}}">{{ $k->NamaKategori }}</option>
                                 @endforeach
                             </select>
                         </div>

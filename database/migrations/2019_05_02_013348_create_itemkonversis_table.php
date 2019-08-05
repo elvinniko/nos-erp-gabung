@@ -14,7 +14,7 @@ class CreateItemkonversisTable extends Migration
     public function up()
     {
         Schema::create('itemkonversis', function (Blueprint $table) {
-            $table->string('KodeItem');
+            $table->string('KodeItem')->primary();
             $table->string('KodeSatuan');
             $table->double('Konversi');
             $table->double('HargaBeli');

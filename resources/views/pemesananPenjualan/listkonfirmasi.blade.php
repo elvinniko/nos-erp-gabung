@@ -8,9 +8,6 @@
               <h1>Pemesanan Penjualan</h1>
               <h3>Sales Order</h3>
               <br>
-              <a href="/sopenjualan/create" class="btn btn-success">
-                <i class="fa fa-plus" aria-hidden="true"></i>Tambah S.O.
-              </a>
             </div>
             <div class="card-body">
               <table class="table table-light">
@@ -24,7 +21,6 @@
                     <th>Gudang</th>
                     <th>Pelanggan</th>
                     <th>Term</th>
-                    <th>Aksi</th>
                   </tr>
                 </thead>
                   @foreach ($pemesananpenjualan as $p)
@@ -37,17 +33,6 @@
                         <td>{{ $p->KodeLokasi}}</td>
                         <td>{{ $p->KodePelanggan}}</td>
                         <td>{{ $p->term }}</td>
-                        <td>
-                          <a href="/sopenjualan/show/{{ $p->KodeSO }}" class="btn-sm btn btn-primary">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                          </a>
-                          <a href="/sopenjualan/edit/{{ $p->KodeSO }}" class="btn-sm btn btn-warning">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                          </a>
-                          <a href="/sopenjualan/destroy/{{ $p->KodeSO }}" class="btn-sm btn btn-danger">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                          </a>
-                        </td>
                     </tr>
                   @endforeach
               </table>

@@ -20,23 +20,7 @@ class PemesananPenjualanController extends Controller
      */
     public function index()
     {
-        $pemesananpenjualan =
-        // DB::table('pemesananpenjualans')
-        //     ->join('lokasis', 'pemesananpenjualans.KodeLokasi', '=', 'lokasis.KodeLokasi')
-        //     ->join('matauangs', 'pemesananpenjualans.KodeMataUang', '=', 'matauangs.KodeMataUang')
-        //     ->join('pelanggans', 'pemesananpenjualans.KodePelanggan', '=', 'pelanggans.KodePelanggan')
-        //     ->join('pemesananpembelians', 'pemesananpembelians.KodePO', '=', 'pemesananpembelians.KodePO')
-        //     ->select('pemesananpenjualans.*', 'lokasis.NamaLokasi', 'matauangs.NamaMataUang', 'pelanggans.NamaPelanggan', 'pemesananpembelians.KodePO')
-        //     ->get();
-        //ORM
-        //  pemesananpenjualan::join('lokasis','pemesananpenjualans.KodeLokasi', '=', 'lokasis.KodeLokasi')
-        //      ->join('matauangs', 'pemesananpenjualans.KodeMataUang', '=', 'matauangs.KodeMataUang')
-        //      ->join('pelanggans', 'pemesananpenjualans.KodePelanggan', '=', 'pelanggans.KodePelanggan')
-        //      ->join('pemesananpembelians', 'pemesananpembelians.KodePO', '=', 'pemesananpembelians.KodePO')
-        //      ->where('Status','=','OPN')
-        //      ->get();
-
-          pemesananpenjualan::all()->where('Status','OPN');
+        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','OPN');
         return view('pemesananPenjualan.pemesananPenjualan',['pemesananpenjualan' => $pemesananpenjualan]);
     }
 
@@ -51,7 +35,9 @@ class PemesananPenjualanController extends Controller
         $matauang = DB::table('matauangs')->get();
         $lokasi = DB::table('lokasis')->get();
         $pelanggan = DB::table('pelanggans')->get();
-        $item = DB::table('items')->get();
+        $item = DB::select("SELECT s.KodeItem, s.NamaItem, k.HargaJual, t.NamaSatuan, s.Keterangan FROM items s 
+            inner join itemkonversis k on k.KodeItem = s.KodeItem 
+            inner join satuans t on k.KodeSatuan = t.KodeSatuan where s.jenisitem='bahanbaku' ");
         $last_id = DB::select('SELECT * FROM pemesananpenjualans ORDER BY KodeSO DESC LIMIT 1');
 
         $year_now = date('y');
@@ -108,6 +94,8 @@ class PemesananPenjualanController extends Controller
             'KodePelanggan' => 'required',
             'Term' => 'required',
         ]);
+
+
         DB::table('pemesananpenjualans')->insert([
             'KodeSO' => $request->KodeSO,
             'Tanggal' => $request->Tanggal,
@@ -121,17 +109,35 @@ class PemesananPenjualanController extends Controller
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
             'Total' => 0,
-            'PPN' => 0,
-            'NilaiPPN'=>0,
+            'PPN' => $request->ppn,
+            'NilaiPPN'=>$request->ppnval,
             'Printed'=>0,
-            'Diskon'=>0,
-            'NilaiDiskon'=>0,
-            'Subtotal'=>0,
+            'Diskon'=>$request->diskon,
+            'NilaiDiskon'=>$request->diskonval,
+            'Subtotal'=>$request->subtotal,
             'KodeSales'=>0,
-            'POPelanggan'=>0,
+            'POPelanggan'=>$request->po,
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
+
+        $items = $request->item;
+        $qtys = $request->qty;
+        $prices = $request->price;
+        $totals = $request->total;
+        foreach ($items as $key => $value) {
+            DB::table('pemesanan_penjualan_detail')->insert([
+                'KodeSO' => $request->KodeSO,
+                'KodeItem'=>$items[$key],
+                'Qty' => $qtys[$key],
+                'Harga' => $prices[$key],
+                'NoUrut' => 0,
+                'Subtotal' => $totals[$key],
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+            
+        }
         return redirect('/sopenjualan');
     }
 
@@ -142,15 +148,19 @@ class PemesananPenjualanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $pemesananpenjualan =  pemesananpenjualan::find($id);
-        $pemesananpenjualan =  pemesananpenjualan::join('lokasis','pemesananpenjualans.KodeLokasi', '=', 'lokasis.KodeLokasi')
-             ->join('matauangs', 'pemesananpenjualans.KodeMataUang', '=', 'matauangs.KodeMataUang')
-             ->join('pelanggans', 'pemesananpenjualans.KodePelanggan', '=', 'pelanggans.KodePelanggan')
-             ->join('pemesananpembelians', 'pemesananpembelians.KodePO', '=', 'pemesananpembelians.KodePO')
-            //  ->where('Status','=','OPN')
-             ->get();
-        return view('pemesananpenjualan.show', compact('pemesananpenjualan'));
+    {   
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal from pemesananpenjualans a 
+            inner join matauangs b on b.KodeMataUang = a.KodeMataUang
+            inner join lokasis c on c.KodeLokasi = a.KodeLokasi
+            inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
+            where a.KodeSO ='".$id."' limit 1")[0];
+        $items = DB::select("SELECT a.Qty,b.NamaItem,d.NamaSatuan, a.Harga, a.Subtotal, b.Keterangan  from pemesanan_penjualan_detail a 
+            inner join items b on a.KodeItem = b.KodeItem
+            inner join itemkonversis c on c.KodeItem = a.KodeItem 
+            inner join satuans d on c.KodeSatuan = d.KodeSatuan
+            where a.KodeSO ='".$id."' ");
+        // dd($items);
+        return view('pemesananpenjualan.show', compact('data', 'id', 'items'));
     }
 
     /**
@@ -188,9 +198,16 @@ class PemesananPenjualanController extends Controller
         return redirect('/sopenjualan');
     }
 
-    public function select(Request $request, $id)
+    public function confirm(Request $request, $id)
     {
-        $items = DB::table('items')->get();
-        return view('pemesananpenjualan.select', compact('id','items'));
+        $data = pemesananpenjualan::find($id);
+        $data->Status = "CFM";
+        $data->save();
+        return redirect('/konfirmasipemesananPenjualan');
+    }
+
+    public function konfirmasiPenjualan(){
+        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
+        return view('pemesananPenjualan.listkonfirmasi',['pemesananpenjualan' => $pemesananpenjualan]);
     }
 }

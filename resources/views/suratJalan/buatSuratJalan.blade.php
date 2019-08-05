@@ -34,7 +34,16 @@
                             <div class="form-group col-md-3">
                                 <div class="form-group">
                                     <label for="">No S.O</label>
-                                    <input type="text" class="form-control" name="KodeSO" readonly>
+                                    <select name="KodeSO" class="form-control" id="KodeSO" onchange="refresh(this)">
+                                        @foreach($pemesananpenjualan as $data)
+                                            @if($data->KodeSO == $id)
+                                                <option selected="selected" value="{{$data->KodeSO}}">{{$data->KodeSO}}</option>
+                                            @else
+                                                <option value="{{$data->KodeSO}}">{{$data->KodeSO}}</option>
+                                            @endif
+                                            
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
@@ -62,13 +71,17 @@
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
                                     <select class="form-control" name="KodeLokasi" id="inputGudang">
-
+                                        @foreach($lokasis as $lok)
+                                        <option value="{{$lok->KodeLokasi}}">{{$lok->NamaLokasi}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Pelanggan</label>
                                     <select class="form-control" name="KodePelanggan" id="inputPelanggan">
-
+                                        @foreach($pelanggans as $pel)
+                                        <option value="{{$pel->KodePelanggan}}">{{$pel->NamaPelanggan}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -84,7 +97,6 @@
                         </div>
 
                         <br>
-                        d
                     </form>
                 </div>
             </div>
@@ -92,3 +104,12 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+<script type="text/javascript">
+
+    function refresh(val){
+        var base ="{{ url('/') }}"+"/suratJalan/create/"+val.value;
+        window.location.href = base;
+    }
+</script>
+@endscript

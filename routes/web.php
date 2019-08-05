@@ -56,13 +56,13 @@ Route::get('/konfirmasireturnPenerimaanBarang', 'PagesController@konfirmasiRetur
 //route pemesanan penjualan
 Route::get('/pemesananPenjualan', 'PemesananPenjualan@index');
 Route::get('/pemesananPenjualan/create','PemesananPenjualan@create');
-Route::get('/konfirmasipemesananPenjualan', 'PagesController@konfirmasiPenjualan');
+
 Route::get('/dikirimpemesananPenjualan', 'PagesController@dikirimPenjualan');
 Route::get('/batalpemesananPenjualan', 'PagesController@batalPenjualan');
 
 //route surat jalan
 Route::get('/suratJalan', 'SuratJalanController@index');
-Route::get('/suratJalan/create','SuratJalanController@create');
+Route::get('/suratJalan/create/{id}','SuratJalanController@create');
 Route::get('/konfirmasisuratJalan', 'PagesController@konfirmasiSuratJalan');
 
 //route return surat jalan
@@ -158,11 +158,12 @@ Route::get('/sobatal', 'PemesananPenjualanBatalController@index');
 
 //route SO
 Route::get('/sopenjualan/store', 'PemesananPenjualanController@store');
-Route::get('/sopenjualan/create', 'PemesananPenjualanController@create');
-Route::get('/sopenjualan/konfirm','PemesananPenjualanController@konfirm');
+Route::post('/sopenjualan/create', 'PemesananPenjualanController@create');
 Route::get('/sopenjualan/show/{id}','PemesananPenjualanController@show');
 Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
-Route::get('/sopenjualan/select/{id}', 'PemesananPenjualanController@select');
+Route::post('/sopenjualan/confirm/{id}', 'PemesananPenjualanController@confirm');
+
+Route::get('/konfirmasipemesananPenjualan', 'PemesananPenjualanController@konfirmasiPenjualan');
 
 //ROUTE STOK
 Route::get('/stokmasuk','StokMasukController@index');
