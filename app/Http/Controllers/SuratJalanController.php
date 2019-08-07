@@ -98,10 +98,28 @@ class SuratJalanController extends Controller
             'Subtotal'=>$request->subtotal,
             'NoIndeks'=>0,
             'Nopol'=>$request->nopol,
-            'KodeSO'=>$id,
+            'KodeSO'=>$request->KodeSO,
+            'KodeSopir'=>$request->KodeSopir,
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
+
+        $items = $request->item;
+        $qtys = $request->qty;
+        foreach ($items as $key => $value) {
+            DB::table('suratjalandetails')->insert([
+                'KodeSuratJalan' => $newID,
+                'KodeItem'=>$items[$key],
+                'Qty' => $qtys[$key],
+                'NoUrut' => 0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+            
+        }
+        // $updateSO = pemesananpenjualan::where('KodeSO',$request->KodeSO)->first();
+        // $updateSO->Status = "CLS";
+        // $updateSO->save();
         return redirect('/suratJalan');
     }
 

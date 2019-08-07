@@ -210,4 +210,9 @@ class PemesananPenjualanController extends Controller
         $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
         return view('pemesananPenjualan.listkonfirmasi',['pemesananpenjualan' => $pemesananpenjualan]);
     }
+
+    public function dikirimPenjualan(){
+        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CLS');
+        return view('pemesananPenjualan.listkonfirmasi',['pemesananpenjualan' => $pemesananpenjualan]);
+    }
 }

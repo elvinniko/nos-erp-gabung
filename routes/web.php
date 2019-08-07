@@ -57,7 +57,7 @@ Route::get('/konfirmasireturnPenerimaanBarang', 'PagesController@konfirmasiRetur
 Route::get('/pemesananPenjualan', 'PemesananPenjualan@index');
 Route::get('/pemesananPenjualan/create','PemesananPenjualan@create');
 
-Route::get('/dikirimpemesananPenjualan', 'PagesController@dikirimPenjualan');
+
 Route::get('/batalpemesananPenjualan', 'PagesController@batalPenjualan');
 
 //route surat jalan
@@ -165,6 +165,7 @@ Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
 Route::post('/sopenjualan/confirm/{id}', 'PemesananPenjualanController@confirm');
 
 Route::get('/konfirmasipemesananPenjualan', 'PemesananPenjualanController@konfirmasiPenjualan');
+Route::get('/dikirimpemesananPenjualan', 'PemesananPenjualanController@dikirimPenjualan');
 
 //ROUTE STOK
 Route::get('/stokmasuk','StokMasukController@index');

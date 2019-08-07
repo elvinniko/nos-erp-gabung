@@ -32,6 +32,7 @@ class CreateSuratjalansTable extends Migration
             $table->integer('NoIndeks');
             $table->string('Nopol');
             $table->string('KodeSO');
+            $table->string('KodeSopir');
             $table->timestamps();
         });
     }

@@ -14,11 +14,10 @@ class CreateSuratjalandetailsTable extends Migration
     public function up()
     {
         Schema::create('suratjalandetails', function (Blueprint $table) {
+            $table->bigIncrements('id',10);
             $table->string('KodeSuratJalan');
             $table->string('KodeItem');
-            $table->string('KodeSatuan');
             $table->double('Qty');
-            $table->string('Keterangan');
             $table->integer('NoUrut');
             $table->timestamps();
         });

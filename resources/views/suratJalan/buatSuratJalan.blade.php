@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Sopir</label>
-                                    <select name="KodeSO" class="form-control" id="KodeSO" onchange="refresh(this)">
+                                    <select name="KodeSopir" class="form-control" id="KodeSO" onchange="refresh(this)">
                                         @foreach($drivers as $data)
                                             <option selected="selected" value="{{$data->IDKaryawan}}">{{$data->Nama}}</option>
                                         @endforeach
@@ -130,7 +130,7 @@
                                     @foreach($items as $key => $data)
                                     <tr class="rowinput">
                                         <td>
-                                           {{$data->NamaItem}} 
+                                            <input type="text" readonly="readonly" name="item[]" value="{{$data->NamaItem}}">
                                         </td>
                                         <td>
                                             <input type="number" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}}" required="" value="{{$data->jml}}">
