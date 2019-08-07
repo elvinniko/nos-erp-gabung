@@ -14,6 +14,7 @@ class CreateSuratjalansTable extends Migration
     public function up()
     {
         Schema::create('suratjalans', function (Blueprint $table) {
+            $table->bigIncrements('KodeSuratJalanID',10);
             $table->string('KodeSuratJalan');
             $table->datetime('Tanggal');
             $table->string('KodeLokasi');
@@ -29,6 +30,8 @@ class CreateSuratjalansTable extends Migration
             $table->double('Subtotal');
             $table->string('KodePelanggan');
             $table->integer('NoIndeks');
+            $table->string('Nopol');
+            $table->string('KodeSO');
             $table->timestamps();
         });
     }

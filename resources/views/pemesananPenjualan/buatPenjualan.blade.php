@@ -255,11 +255,12 @@
                 $(".subtotal").val(parseInt($(".subtotal").val())+parseInt($(".total"+i).val()));
             }
         }
+        var befDis = $(".subtotal").val();
         diskon = parseInt($(".subtotal").val())*diskon/100;
         $(".subtotal").val(parseInt($(".subtotal").val())-diskon);
         var ppn =$(".ppn").val();
         if(ppn=="ya"){
-            ppn = parseInt($(".subtotal").val())*10/100;
+            ppn = parseInt(befDis)*10/100;
         }
         $(".ppnval").val(ppn);
         $(".diskonval").val(diskon);

@@ -58,18 +58,16 @@
                   <th scope="col">Nama Pelanggan</th>
                   <th scope="col">Tanggal</th>
                   <th scope="col">Gudang</th>
-                  <th scope="col">Status</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                   @foreach ($suratjalans as $suratjalan)
                     <tr>
-                        <td>{{ $suratjalan->KodeSuratJalan}}</td>
+                        <td>{{ $suratjalan->KodeSO}}</td>
                         <td>{{ $suratjalan->KodePelanggan}}</td>
                         <td>{{ $suratjalan->Tanggal }}</td>
                         <td>{{ $suratjalan->KodeLokasi}}</td>
-                        <td>{{ $suratjalan->Status}}</td>
                         <td>
                             <a href="#" class="btn-sm btn btn-primary">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
