@@ -23,7 +23,7 @@ class CreateKaryawanTable extends Migration
             $table->string('Negara');
             $table->string('Telepon');
             $table->string('Email');
-            $table->string('JenisKelamin');
+            $table->enum('JenisKelamin',['Laki-laki','Perempuan']);
             $table->string('KodeUser');
             $table->string('Status');
             $table->string('Jabatan');
