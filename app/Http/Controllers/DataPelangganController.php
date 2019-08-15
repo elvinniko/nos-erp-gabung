@@ -15,8 +15,7 @@ class DataPelangganController extends Controller
      */
     public function index()
     {
-        $pelanggan = pelanggan::latest()->paginate(10);
-        //$pelanggan = pelanggan::where('Status','OPN')->get();
+        $pelanggan = DB::table("pelanggans")->get();
         return view('master.dataPelanggan', ['pelanggan'=> $pelanggan]);
     }
 
