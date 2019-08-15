@@ -15,7 +15,7 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $karyawan = karyawan::where('Status','OPN')->get();
+        $karyawan = karyawan::where('Status','OPN')->paginate(5);
         return view('master.karyawan.index', compact('karyawan'));
     }
 

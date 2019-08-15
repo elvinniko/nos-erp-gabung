@@ -1,4 +1,4 @@
-@extends('home')
+@extends('index')
 @section('content')
   <div class="container">
     <div class="row">
@@ -10,6 +10,16 @@
               <i class="fa fa-plus-square" aria-hidden="true"></i>
               Tambah Satuan
             </a>
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Cari">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    </span>
+                </div>
+            </div>
           </div>
           <div class="x_body">
             <table class="table table-light">

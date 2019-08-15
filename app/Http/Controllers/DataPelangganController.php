@@ -15,7 +15,7 @@ class DataPelangganController extends Controller
      */
     public function index()
     {
-        $pelanggan = DB::table("pelanggans")->get();
+        $pelanggan = DB::table('pelanggans')->where('Status','OPN')->paginate(5);
         return view('master.dataPelanggan', ['pelanggan'=> $pelanggan]);
     }
 
