@@ -1,4 +1,4 @@
-@extends('home')
+@extends('index')
 @section('content')
 <div class="container-fluid">
     <div class="row mb-2">
@@ -6,7 +6,7 @@
             <h1 class="m-0 text-dark">Tambah Data Item</h1>
         </div><!-- /.col -->
     </div><!-- /.row -->
-    <br> 
+    <br>
 
     <form action="" method="get">
     @csrf
@@ -38,5 +38,5 @@
     </form>
 
 </div><!-- /.container-fluid -->
- 
+
 @endsection
