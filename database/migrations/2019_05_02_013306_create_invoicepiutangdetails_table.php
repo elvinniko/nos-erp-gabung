@@ -14,6 +14,7 @@ class CreateInvoicepiutangdetailsTable extends Migration
     public function up()
     {
         Schema::create('invoicepiutangdetails', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('KodePiutang');
             $table->string('KodeSuratJalan');
             $table->double('Subtotal');

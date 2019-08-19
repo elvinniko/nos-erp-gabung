@@ -69,7 +69,7 @@
                         <td>{{ $suratjalan->Tanggal }}</td>
                         <td>{{ $suratjalan->KodeLokasi}}</td>
                         <td>
-                            <a href="#" class="btn-sm btn btn-primary">
+                            <a href="{{ url('/suratJalan/show/'.$suratjalan->KodeSuratJalanID) }}" class="btn-sm btn btn-primary">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
                             <a href="#" class="btn-sm btn btn-warning">

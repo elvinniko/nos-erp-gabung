@@ -14,6 +14,7 @@ class CreateStokkeluardetailsTable extends Migration
     public function up()
     {
         Schema::create('stokkeluardetails', function (Blueprint $table) {
+            $table->bigIncrements('id',10);
             $table->string('KodeStokKeluar');
             $table->string('KodeItem');
             $table->string('KodeSatuan');

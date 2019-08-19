@@ -26,7 +26,8 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h1>Pemesanan Penjualan</h1>
-                    <h3>{{$newID}}</h3>
+                    <h3 class="a" style="display: none;">{{$newID}}</h3>
+                    <h3 class="b">{{$newIDP}}</h3>
                 </div>
                 <div class="x_content">
                     <form action="/sopenjualan/store" method="post">
@@ -37,7 +38,7 @@
                         <div class="form-row">
                             <!-- column 1 -->
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control" name="KodeSO" value="{{$newID}}">
+                                <input type="hidden" class="form-control idp" name="KodeSO" value="{{$newIDP}}">
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
                                     <input type="date" class="form-control" name="Tanggal" id="inputDate">
@@ -93,7 +94,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
-                                    <select class="form-control ppn" onchange="ppnfunc()" name="ppn" id="ppn">
+                                    <select class="form-control ppn" onchange="ppnfunc(this)" name="ppn" id="ppn">
                                         <option value="ya">Ya</option>
                                         <option value="tidak">Tidak</option>
                                     </select>
@@ -238,7 +239,18 @@
         updatePrice(count);
     }
 
-    function ppnfunc(){
+    function ppnfunc(val){
+
+        if(val.value=='ya'){
+            $(".a").hide();
+            $(".b").show();
+            $(".idp").val($(".b").text());
+        }else{
+            $(".a").show();
+            $(".b").hide();
+            $(".idp").val($(".a").text());
+        }
+
         var count =$("#totalItem").val();
         updatePrice(count);
     }

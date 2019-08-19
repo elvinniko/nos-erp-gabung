@@ -14,7 +14,7 @@ class CreateStokmasuksTable extends Migration
     public function up()
     {
         Schema::create('stokmasuks', function (Blueprint $table) {
-            $table->string('KodeStokMasuk');
+            $table->string('KodeStokMasuk')->primary();
             $table->string('KodeLokasi');
             $table->datetime('Tanggal');
             $table->string('Status');

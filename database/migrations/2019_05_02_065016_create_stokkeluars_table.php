@@ -14,7 +14,7 @@ class CreateStokkeluarsTable extends Migration
     public function up()
     {
         Schema::create('stokkeluars', function (Blueprint $table) {
-            $table->string('KodeStokKeluar');
+            $table->string('KodeStokKeluar')->primary();
             $table->string('KodeLokasi');
             $table->datetime('Tanggal');
             $table->string('Status');
