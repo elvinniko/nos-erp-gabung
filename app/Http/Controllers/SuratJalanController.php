@@ -63,9 +63,12 @@ class SuratJalanController extends Controller
         $year_now = date('y');
         $month_now = date('m');
         $date_now = date('d');
-
+        $pref = "SJ";
+        if($request->ppn=='ya'){
+            $pref = "SJT";
+        }
         if ($last_id == null) {
-            $newID = "SJ-" . $year_now . $month_now . "0001";
+            $newID = $pref."-" . $year_now . $month_now . "0001";
         } else {
             $string = $last_id[0]->KodeSuratJalan;
             $ids = substr($string, -4, 4);
@@ -81,7 +84,7 @@ class SuratJalanController extends Controller
                 $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
             }
 
-            $newID = "SJ-" . $year_now . $month_now . $newID;
+            $newID = $pref."-" . $year_now . $month_now . $newID;
         }
         DB::table('suratjalans')->insert([
             'KodeSuratJalan' => $newID,
@@ -120,9 +123,7 @@ class SuratJalanController extends Controller
             ]);
             
         }
-        // $updateSO = pemesananpenjualan::where('KodeSO',$request->KodeSO)->first();
-        // $updateSO->Status = "CLS";
-        // $updateSO->save();
+        
         return redirect('/suratJalan');
     }
 
@@ -253,6 +254,10 @@ class SuratJalanController extends Controller
                 'updated_at' => \Carbon\Carbon::now()
             ]);
         }
+
+        $updateSO = pemesananpenjualan::where('KodeSO',$data->KodeSO)->first();
+        $updateSO->Status = "CLS";
+        $updateSO->save();
              
         // DB::table('stokkeluars')->insert([
         //     'KodeStokKeluar' => $newID,

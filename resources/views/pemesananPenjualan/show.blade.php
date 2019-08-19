@@ -138,9 +138,12 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
-                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="" value="{{$data->Subtotal}}">
-                                    <input type="hidden" name="ppnval" class="ppnval">
+                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="" value="{{$data->Subtotal - $data->NilaiPPN}}">
+                                    <label for="inputPelanggan">Nilai PPN</label>
+                                    <input type="text" readonly="" name="ppnval" class="ppnval form-control" value="{{$data->NilaiPPN}}">
                                     <input type="hidden" name="diskonval" class="diskonval">
+                                    <label for="inputPelanggan">Total</label>
+                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="" value="{{$data->Subtotal}}">
                                 </div>
                             </div>
                         </div>
