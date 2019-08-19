@@ -98,7 +98,6 @@ class PemesananPenjualanController extends Controller
             'Term' => 'required',
         ]);
 
-
         DB::table('pemesananpenjualans')->insert([
             'KodeSO' => $request->KodeSO,
             'Tanggal' => $request->Tanggal,
@@ -111,13 +110,13 @@ class PemesananPenjualanController extends Controller
             'Keterangan' => $request->Keterangan,
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
-            'Total' => 0,
+            'Total' => $request->subtotal,
             'PPN' => $request->ppn,
             'NilaiPPN'=>$request->ppnval,
             'Printed'=>0,
             'Diskon'=>$request->diskon,
             'NilaiDiskon'=>$request->diskonval,
-            'Subtotal'=>$request->subtotal,
+            'Subtotal'=>$request->subtotal-$request->ppnval,
             'KodeSales'=>0,
             'POPelanggan'=>$request->po,
             'created_at' => \Carbon\Carbon::now(),
@@ -152,7 +151,7 @@ class PemesananPenjualanController extends Controller
      */
     public function show($id)
     {   
-        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal from pemesananpenjualans a 
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal, a.NilaiPPN from pemesananpenjualans a 
             inner join matauangs b on b.KodeMataUang = a.KodeMataUang
             inner join lokasis c on c.KodeLokasi = a.KodeLokasi
             inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
@@ -163,6 +162,7 @@ class PemesananPenjualanController extends Controller
             inner join satuans d on c.KodeSatuan = d.KodeSatuan
             where a.KodeSO ='".$id."' ");
         // dd($items);
+        
         return view('pemesananpenjualan.show', compact('data', 'id', 'items'));
     }
 

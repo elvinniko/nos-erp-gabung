@@ -133,9 +133,12 @@
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
                                     <input type="hidden" value="{{sizeof($items)}}" name="" class="tot">
+                                    <input type="text" readonly="" class="form-control befDis" id="inputBerlaku" placeholder="">
+                                    <label for="inputPelanggan">Nilai PPN</label>
+                                    <input type="text" readonly="" name="ppnval" class="ppnval form-control">
+                                    <input type="hidden" name="diskonval" class="diskonval ">
+                                    <label for="inputPelanggan">Total</label>
                                     <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="">
-                                    <input type="hidden" name="ppnval" class="ppnval">
-                                    <input type="hidden" name="diskonval" class="diskonval">
                                 </div>
                             </div>
                         </div>
@@ -175,6 +178,7 @@
         }
         $(".ppnval").val(ppn);
         $(".diskonval").val(diskon);
+        $(".befDis").val(parseInt($(".subtotal").val()));
         $(".subtotal").val(parseInt($(".subtotal").val())+ppn);
     }
 

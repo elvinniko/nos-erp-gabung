@@ -30,7 +30,7 @@
                     <h3 class="b">{{$newIDP}}</h3>
                 </div>
                 <div class="x_content">
-                    <form action="/sopenjualan/store" method="post">
+                    <form action="/sopenjualan/store" method="post" class="formsub" >
                         @csrf
 
                         <!-- Contents -->
@@ -41,23 +41,23 @@
                                 <input type="hidden" class="form-control idp" name="KodeSO" value="{{$newIDP}}">
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" class="form-control" name="Tanggal" id="inputDate">
+                                    <input type="date" required="required" class="form-control" name="Tanggal" id="inputDate">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate2">Tanggal Kirim</label>
-                                    <input type="date" class="form-control" name="TanggalKirim" id="inputDate2">
+                                    <input type="date" required="required" class="form-control" name="TanggalKirim" id="inputDate2">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Masa Berlaku</label>
-                                    <input type="text" class="form-control" name="Expired" id="inputBerlaku" placeholder="/hari">
+                                    <input type="text" required="required" class="form-control" name="Expired" id="inputBerlaku" placeholder="/hari">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Term</label>
-                                    <input type="text" class="form-control" name="Term" id="inputTerm" placeholder="/hari">
+                                    <input type="text" required="required" class="form-control" name="Term" id="inputTerm" placeholder="/hari">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">P.O. Customer</label>
-                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="">
+                                    <input type="text"  required="required" class="form-control" name="po" id="inputBerlaku" placeholder="">
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -66,7 +66,7 @@
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                     <label for="inputMatauang">Mata Uang</label>
-                                    <select class="form-control" name="KodeMataUang" id="inputMatauang" placeholder="Pilih mata uang">
+                                    <select class="form-control" required="required" name="KodeMataUang" id="inputMatauang" placeholder="Pilih mata uang">
                                         @foreach($matauang as $mu)
                                         <option value="{{$mu->KodeMataUang}}">{{$mu->NamaMataUang}}</option>
                                         @endforeach
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
-                                    <select class="form-control" name="KodeLokasi" id="inputGudang">
+                                    <select class="form-control" required="required" name="KodeLokasi" id="inputGudang">
                                         @foreach($lokasi as $lok)
                                         <option value="{{$lok->KodeLokasi}}">{{$lok->NamaLokasi}}</option>
                                         @endforeach
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Diskon</label>
-                                    <input type="number" onchange="disc()" class="diskon form-control" name="diskon" id="inputBerlaku" placeholder="%">
+                                    <input type="number" onchange="disc()" class="diskon form-control" required="required" name="diskon" id="inputBerlaku" placeholder="%">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
@@ -105,7 +105,7 @@
                             <!-- column 3 -->
                             <div class="form-group col-md-3">
                                 <label for="inputKeterangan">Keterangan</label>
-                                <textarea class="form-control" name="Keterangan" id="inputKeterangan" rows="5"></textarea>
+                                <textarea required="required" class="form-control" name="Keterangan" id="inputKeterangan" rows="5"></textarea>
                                 <br><br>
                                 
                             </div>
@@ -140,7 +140,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty(1)" name="qty[]" class="form-control qty1" required="" value="0">
+                                            <input type="number" onchange="qty(1)" name="qty[]" class="form-control qtyj qty1" required="required" value="0">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control satuan1" required="" value="0">
@@ -163,9 +163,12 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
-                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="">
-                                    <input type="hidden" name="ppnval" class="ppnval">
-                                    <input type="hidden" name="diskonval" class="diskonval">
+                                    <input type="text" readonly="" class="form-control befDis" value="0" id="inputBerlaku" placeholder="">
+                                    <label for="inputPelanggan">Nilai PPN</label>
+                                    <input type="text" readonly value="0" name="ppnval" class="ppnval form-control">
+                                    <input type="hidden" value="0" name="diskonval" class="diskonval">
+                                    <label for="inputPelanggan">Total</label>
+                                    <input type="text" readonly="" class="form-control subtotal" value="0" name="subtotal" id="inputBerlaku" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -273,10 +276,28 @@
         var ppn =$(".ppn").val();
         if(ppn=="ya"){
             ppn = parseInt(befDis)*10/100;
+        }else{
+            ppn = parseInt(0);
         }
         $(".ppnval").val(ppn);
         $(".diskonval").val(diskon);
+        $(".befDis").val(parseInt($(".subtotal").val()));
         $(".subtotal").val(parseInt($(".subtotal").val())+ppn);
     }
+
+    $('.formsub').submit(function(event){
+        tot = $("#totalItem").val();
+        for (var i = 1; i <= tot; i++) {
+            if (typeof $(".qty"+i).val()=== 'undefined'){
+            }else{
+                if ($(".qty"+i).val() == 0){
+                    event.preventDefault();
+                    $(".qty"+i).focus();
+                }
+            }
+            
+        }
+        
+    });
 </script>
 @endsection

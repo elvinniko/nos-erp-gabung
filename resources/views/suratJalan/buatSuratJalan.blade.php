@@ -28,7 +28,7 @@
                     <h1>Surat Jalan</h1>
                 </div>
                 <div class="x_content">
-                    <form action="/suratJalan/store/{{$id}}" method="post">
+                    <form action="/suratJalan/store/{{$id}}" method="post" class="formsub">
                         @csrf
 
                         <!-- Contents -->
@@ -51,11 +51,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" class="form-control" name="Tanggal" id="inputDate">
+                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" required="required">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Alamat</label>
-                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku">
+                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku" required="required">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Sopir</label>
@@ -80,7 +80,7 @@
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                     <label for="inputPO">No Polisi</label>
-                                    <input type="text" class="form-control" name="nopol">
+                                    <input type="text" class="form-control" name="nopol" required="required">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
@@ -134,7 +134,7 @@
                                             <input type="hidden" readonly="readonly" name="item[]" value="{{$data->KodeItem}}">
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}}" required="" value="{{$data->jml}}">
+                                            <input type="number" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}} qtyj" required="" value="{{$data->jml}}">
                                             <input type="hidden" class="max{{$key+1}}" value="{{$data->jml}}">
                                         </td>
                                         <td>
@@ -160,9 +160,12 @@
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
                                     <input type="hidden" value="{{sizeof($items)}}" name="" class="tot">
+                                    <input type="text" readonly="" class="form-control befDis" id="inputBerlaku" placeholder="">
+                                    <label for="inputPelanggan">Nilai PPN</label>
+                                    <input type="text" readonly="" name="ppnval" class="ppnval form-control">
+                                    <input type="hidden" name="diskonval" class="diskonval ">
+                                    <label for="inputPelanggan">Total</label>
                                     <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="">
-                                    <input type="hidden" name="ppnval" class="ppnval">
-                                    <input type="hidden" name="diskonval" class="diskonval">
                                 </div>
                             </div>
                         </div>
@@ -202,6 +205,7 @@
         }
         $(".ppnval").val(ppn);
         $(".diskonval").val(diskon);
+        $(".befDis").val(parseInt($(".subtotal").val()));
         $(".subtotal").val(parseInt($(".subtotal").val())+ppn);
     }
 
@@ -217,5 +221,20 @@
         var count =$(".tot").val();
         updatePrice(count);
     }
+
+    $('.formsub').submit(function(event){
+        tot = $(".tot").val();
+        for (var i = 1; i <= tot; i++) {
+            if (typeof $(".qty"+i).val()=== 'undefined'){
+            }else{
+                if ($(".qty"+i).val() == 0){
+                    event.preventDefault();
+                    $(".qty"+i).focus();
+                }
+            }
+            
+        }
+        
+    });
 </script>
 @endsection
