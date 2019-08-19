@@ -14,7 +14,7 @@ class CreateInvoicepiutangsTable extends Migration
     public function up()
     {
         Schema::create('invoicepiutangs', function (Blueprint $table) {
-            $table->string('KodeInvoicePiutang');
+            $table->bigIncrements('KodeInvoicePiutang');
             $table->datetime('Tanggal');
             $table->string('KodePelanggan');
             $table->string('Status');

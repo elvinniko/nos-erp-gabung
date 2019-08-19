@@ -64,6 +64,8 @@ Route::get('/batalpemesananPenjualan', 'PagesController@batalPenjualan');
 Route::get('/suratJalan', 'SuratJalanController@index');
 Route::get('/suratJalan/create/{id}','SuratJalanController@create');
 Route::post('/suratJalan/store/{id}','SuratJalanController@store');
+Route::get('/suratJalan/show/{id}','SuratJalanController@show');
+Route::post('/suratJalan/confirm/{id}','SuratJalanController@confirm');
 Route::get('/konfirmasisuratJalan', 'SuratJalanController@konfirmasiSuratJalan');
 
 //route return surat jalan
@@ -170,7 +172,7 @@ Route::get('/dikirimpemesananPenjualan', 'PemesananPenjualanController@dikirimPe
 //ROUTE STOK
 Route::get('/stokmasuk','StokMasukController@index');
 Route::get('/stokmasuk/create','StokMasukController@create');
-Route::get('/stokmasuk/store','StokMasukController@store');
+Route::post('/stokmasuk/store','StokMasukController@store');
 
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');

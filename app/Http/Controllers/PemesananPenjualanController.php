@@ -46,6 +46,7 @@ class PemesananPenjualanController extends Controller
 
         if ($last_id == null) {
             $newID = "SO-" . $year_now . $month_now . "0001";
+            $newIDP = "SOT-" . $year_now . $month_now . "0001";
         } else {
             $string = $last_id[0]->KodeSO;
             $id = substr($string, -4, 4);
@@ -60,12 +61,14 @@ class PemesananPenjualanController extends Controller
                 $newID = $id + 1;
                 $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
             }
-
+            $newIDP = "SOT-" . $year_now . $month_now . $newID;
             $newID = "SO-" . $year_now . $month_now . $newID;
+            
         }
 
         return view('pemesananPenjualan.buatPenjualan', [
             'newID' => $newID,
+            'newIDP' => $newIDP,
             'pemesananpembelian' => $pemesananpembelian,
             'matauang' => $matauang,
             'lokasi' => $lokasi,
