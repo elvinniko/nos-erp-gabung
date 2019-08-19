@@ -104,6 +104,24 @@ class StokMasukController extends Controller
                 'updated_at' => \Carbon\Carbon::now()
             ]);
         }
+
+
+        foreach ($items as $key => $value) {
+            DB::table('keluarmasukbarangs')->insert([
+                'Tanggal' => $request->Tanggal,
+                'KodeLokasi' => $request->KodeLokasi,
+                'KodeItem' => $value,
+                'JenisTransaksi'=>'SLM',
+                'KodeTransaksi'=>$newID,
+                'Qty' => $qtys[$key],
+                'HargaRata'=>0,
+                'KodeUser'=>'Admin',
+                'idx'=>0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
+            ]);
+        }
+        
         return redirect('/stokmasuk');
     }
 }

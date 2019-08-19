@@ -238,29 +238,46 @@ class SuratJalanController extends Controller
             $tot += $value->jml;
         }
 
-        DB::table('stokkeluars')->insert([
-            'KodeStokKeluar' => $newID,
-            'KodeLokasi' => $data->KodeLokasi,
-            'Tanggal' => $data->Tanggal,
-            'Status' => 'CFM',
-            'Printed' => 0,
-            'TotalItem' => $tot,
-            'KodeUser' => 'Admin',
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now()
-        ]);
         foreach ($items as $key => $value) {
-            DB::table('stokkeluardetails')->insert([
-                'KodeStokKeluar' => $newID,
+            DB::table('keluarmasukbarangs')->insert([
+                'Tanggal' => $data->Tanggal,
+                'KodeLokasi' => $data->KodeLokasi,
                 'KodeItem' => $value->KodeItem,
-                'Qty' => $value->jml,
-                'KodeSatuan' => '',
-                'Keterangan' => '',
-                'NoUrut' => 0,
+                'JenisTransaksi'=>'SJB',
+                'KodeTransaksi'=>$data->KodeSuratJalan,
+                'Qty' => -$value->jml,
+                'HargaRata'=>0,
+                'KodeUser'=>'Admin',
+                'idx'=>0,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
             ]);
         }
+             
+        // DB::table('stokkeluars')->insert([
+        //     'KodeStokKeluar' => $newID,
+        //     'KodeLokasi' => $data->KodeLokasi,
+        //     'Tanggal' => $data->Tanggal,
+        //     'Status' => 'CFM',
+        //     'Printed' => 0,
+        //     'TotalItem' => $tot,
+        //     'KodeUser' => 'Admin',
+        //     'created_at' => \Carbon\Carbon::now(),
+        //     'updated_at' => \Carbon\Carbon::now()
+        // ]);
+        // foreach ($items as $key => $value) {
+        //     DB::table('stokkeluardetails')->insert([
+        //         'KodeStokKeluar' => $newID,
+        //         'KodeItem' => $value->KodeItem,
+        //         'Qty' => $value->jml,
+        //         'KodeSatuan' => '',
+        //         'Keterangan' => '',
+        //         'NoUrut' => 0,
+        //         'created_at' => \Carbon\Carbon::now(),
+        //         'updated_at' => \Carbon\Carbon::now()
+        //     ]);
+        // }
+
         return redirect('/konfirmasisuratJalan');
     }
 }

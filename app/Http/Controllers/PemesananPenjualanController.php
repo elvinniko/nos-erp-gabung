@@ -97,8 +97,7 @@ class PemesananPenjualanController extends Controller
             'KodePelanggan' => 'required',
             'Term' => 'required',
         ]);
-
-
+        
         DB::table('pemesananpenjualans')->insert([
             'KodeSO' => $request->KodeSO,
             'Tanggal' => $request->Tanggal,
