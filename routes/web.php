@@ -173,6 +173,8 @@ Route::get('/sobatal', 'PemesananPenjualanBatalController@index');
 Route::post('/sopenjualan/store', 'PemesananPenjualanController@store');
 Route::get('/sopenjualan/create', 'PemesananPenjualanController@create');
 Route::get('/sopenjualan/show/{id}','PemesananPenjualanController@show');
+Route::get('/sopenjualan/edit/{id}','PemesananPenjualanController@edit');
+Route::post('/sopenjualan/update/{id}','PemesananPenjualanController@update');
 Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
 Route::post('/sopenjualan/confirm/{id}', 'PemesananPenjualanController@confirm');
 

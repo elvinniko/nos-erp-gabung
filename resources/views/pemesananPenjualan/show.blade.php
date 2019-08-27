@@ -40,23 +40,23 @@
                                 <input type="hidden" class="form-control" name="KodeSO" value="{{$id}}">
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" value="{{$data->Tanggal}}">
+                                    <input type="text" readonly="" class="tgl form-control" name="Tanggal" id="inputDate" value="{{$data->Tanggal}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate2">Tanggal Kirim</label>
-                                    <input type="date" class="form-control" name="TanggalKirim" id="inputDate2" value="{{$data->tgl_kirim}}">
+                                    <input type="text" class="form-control" name="TanggalKirim" readonly="" id="inputDate2" value="{{$data->tgl_kirim}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Masa Berlaku</label>
-                                    <input type="text" class="form-control" name="Expired" id="inputBerlaku" placeholder="/hari" value="{{$data->Expired}}">
+                                    <input type="text" class="form-control" name="Expired" readonly=""id="inputBerlaku" placeholder="/hari" value="{{$data->Expired}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Term</label>
-                                    <input type="text" class="form-control" name="Term" id="inputTerm" placeholder="/hari" value="{{$data->term}}">
+                                    <input type="text" class="form-control" name="Term" readonly="" id="inputTerm" placeholder="/hari" value="{{$data->term}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">P.O. Customer</label>
-                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->POPelanggan}}">
+                                    <input readonly="" type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->POPelanggan}}">
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -65,26 +65,26 @@
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                     <label for="inputMatauang">Mata Uang</label>
-                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaMataUang}}">
+                                    <input readonly="" type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaMataUang}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
-                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaLokasi}}">
+                                    <input readonly="" type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaLokasi}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Pelanggan</label>
-                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaPelanggan}}">
+                                    <input readonly="" type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->NamaPelanggan}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Diskon</label>
-                                    <input type="number" onchange="disc()" class="diskon form-control" name="diskon" id="inputBerlaku" placeholder="%" value="{{$data->Diskon}}">
+                                    <input readonly="" type="number" onchange="disc()" class="diskon form-control" name="diskon" id="inputBerlaku" placeholder="%" value="{{$data->Diskon}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
                                         @if($data->PPN == "ya")
-                                          <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="Ya">
+                                          <input type="text" readonly="" class="form-control" name="po" id="inputBerlaku" placeholder="" value="Ya">
                                         @else
-                                          <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="Tidak">
+                                          <input type="text" readonly="" class="form-control" name="po" id="inputBerlaku" placeholder="" value="Tidak">
                                         @endif
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                             <!-- column 3 -->
                             <div class="form-group col-md-3">
                                 <label for="inputKeterangan">Keterangan</label>
-                                <textarea class="form-control" name="Keterangan" id="inputKeterangan" rows="5">{{$data->Keterangan}}</textarea>
+                                <textarea readonly="" class="form-control" name="Keterangan" id="inputKeterangan" rows="5">{{$data->Keterangan}}</textarea>
                                 <br><br>
                                 
                             </div>
@@ -113,22 +113,22 @@
                                     @foreach($items as $item)
                                     <tr class="rowinput">
                                         <td>
-                                            <input type="text" onchange="qty(1)" class="form-control qty1" required="" value="{{$item->NamaItem}}">
+                                            <input readonly="" type="text" onchange="qty(1)" class="form-control qty1" required="" value="{{$item->NamaItem}}">
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty(1)" class="form-control qty1" required="" value="{{$item->Qty}}">
+                                            <input readonly="" type="number" onchange="qty(1)" class="form-control qty1" required="" value="{{$item->Qty}}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control satuan1" required="" value="{{$item->NamaSatuan}}">
+                                            <input readonly="" type="text" class="form-control satuan1" required="" value="{{$item->NamaSatuan}}">
                                         </td>
                                         <td>
                                             <input readonly="" type="text" class="form-control price1" required="" value="{{$item->Harga}}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control keterangan1" required=""  value="{{$item->Keterangan}}">
+                                            <input readonly="" type="text" class="form-control keterangan1" required=""  value="{{$item->Keterangan}}">
                                         </td>
                                         <td>
-                                            <input readonly="" type="text"  class="form-control total1" required=""  value="{{$item->Subtotal}}">
+                                            <input readonly="" readonly="" type="text"  class="form-control total1" required=""  value="{{$item->Subtotal}}">
                                         </td>
                                     </tr>
                                     @endforeach
