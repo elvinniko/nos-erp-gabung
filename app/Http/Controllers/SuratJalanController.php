@@ -37,14 +37,25 @@ class SuratJalanController extends Controller
     public function create($id)
     {
         $drivers = karyawan::where('jabatan','driver')->get();
-        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
+        $pemesananpenjualan =DB::select("select DISTINCT a.KodeSO from (
+            sELECT DISTINCT a.KodeSO,COALESCE(SUM(a.qty),0)/coalesce(NULLIF(COUNT(sj.KodeSO), 0),1)-COALESCE(SUM(sjd.qty),0) as jml FROM pemesanan_penjualan_detail a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan 
+                        left join suratjalans sj on sj.KodeSO = a.KodeSO
+                        left join suratjalandetails sjd on sjd.KodeSuratJalan = sj.KodeSuratJalan and sjd.KodeItem = a.KodeItem
+                        GROUP by a.KodeSO, a.KodeItem
+                        having jml>0 ) as a");
         if ($id=="0"){
-            $init = $pemesananpenjualan->first();
-            $id = $init->KodeSO;
+            if(count($pemesananpenjualan) <=0 ){
+                return redirect('/sopenjualan/create');
+            }
+            $id = $pemesananpenjualan[0]->KodeSO;
         }
         $pelanggans = DB::table('pelanggans')->get();
         $lokasis = DB::table('lokasis')->get();
-        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM pemesanan_penjualan_detail a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSO='".$id."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        $items = DB::select("sELECT a.KodeItem,i.NamaItem, COALESCE(a.qty,0)-COALESCE(SUM(sjd.qty),0) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM pemesanan_penjualan_detail a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan 
+            left join suratjalans sj on sj.KodeSO = a.KodeSO
+            left join suratjalandetails sjd on sjd.KodeSuratJalan = sj.KodeSuratJalan and sjd.KodeItem = a.KodeItem
+            where a.KodeSO='".$id."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem, a.qty
+            having jml >0");
         $so =pemesananpenjualan::where('KodeSO',$id)->first();
         $matauang = DB::table('matauangs')->get();
         return view('suratJalan.buatSuratJalan', compact('pemesananpenjualan', 'id', 'pelanggans', 'lokasis','drivers','items','so','matauang'));
@@ -255,9 +266,9 @@ class SuratJalanController extends Controller
             ]);
         }
 
-        $updateSO = pemesananpenjualan::where('KodeSO',$data->KodeSO)->first();
-        $updateSO->Status = "CLS";
-        $updateSO->save();
+        // $updateSO = pemesananpenjualan::where('KodeSO',$data->KodeSO)->first();
+        // $updateSO->Status = "CLS";
+        // $updateSO->save();
              
         // DB::table('stokkeluars')->insert([
         //     'KodeStokKeluar' => $newID,
