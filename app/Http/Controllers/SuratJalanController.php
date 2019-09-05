@@ -191,6 +191,7 @@ class SuratJalanController extends Controller
 
     public function confirm($id)
     {
+
         $data = suratjalan::where('KodeSuratJalanID',$id)->first();
         $data->Status = "CFM";
         $data->save();
@@ -200,7 +201,7 @@ class SuratJalanController extends Controller
             'Tanggal' => $data->Tanggal,
             'KodePelanggan' => $data->KodePelanggan,
             'Status' => 'OPN',
-            'Total' => 0,
+            'Total' => $so->Total,
             'Keterangan' => $so->keterangan,
             'KodeMataUang' => $data->KodeMataUang,
             'KodeUser' => 'Admin',

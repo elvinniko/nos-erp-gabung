@@ -100,7 +100,11 @@
                         <li><a href="{{ url('/returnPenjualanLangsung') }}">Return Penjualan Langsung</a></li>
                       </ul>
                     </li>
-
+                    <li><a>Invoice<span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ url('/invoicepiutang') }}">Invoice Piutang </a></li>
+                      </ul>
+                    </li>
                   </ul>
                 </li>
 
@@ -134,6 +138,9 @@
                     <ul class="nav child_menu">
                       <li>
                           <a href="/stokmasuk">Stok Masuk</a>
+                      </li>
+                      <li>
+                          <a href="/kartustok">Kartu Stok</a>
                       </li>
                     </ul>
                   </li>
