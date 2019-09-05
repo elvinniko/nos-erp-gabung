@@ -185,7 +185,8 @@ Route::get('/dikirimpemesananPenjualan', 'PemesananPenjualanController@dikirimPe
 Route::get('/stokmasuk','StokMasukController@index');
 Route::get('/stokmasuk/create','StokMasukController@create');
 Route::post('/stokmasuk/store','StokMasukController@store');
-
+Route::get('/kartustok','KartuStokController@index');
+Route::get('/invoicepiutang','InvoiceController@piutang');
 
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');
