@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\kategori;
 use Illuminate\Support\Facades\DB;
+use App\Request\Request\Master\RequestKlasifikasi;
 
 class DataKlasifikasiController extends Controller
 {
@@ -16,7 +17,7 @@ class DataKlasifikasiController extends Controller
     public function index()
     {
         // $kategori = DB::table('kategoris')->where('Status',"=",'OPN')->get();
-        $kategori = kategori::where('Status','OPN')->get();
+        $kategori = kategori::where('Status','OPN')->paginate(5);
         return view('master.dataKlasifikasi', ['kategori' => $kategori]);
 
         // $kategori = kategori::all();
@@ -62,6 +63,7 @@ class DataKlasifikasiController extends Controller
             'NamaKategori'=> 'required',
             'KodeItemAwal'=> 'required'
         ]);
+            //$validated = $request->validated();
 
         DB::table('kategoris')->insert([
             'KodeKategori' => $request->KodeKategori,

@@ -88,6 +88,8 @@ Route::resource('datapelanggan', 'DataPelangganController');
 Route::get('/datapelanggan', 'DataPelangganController@index');
 Route::get('/datasatuan', 'DataSatuanController@index');
 Route::get('/datasupplier', 'DataSupplierController@index');
+Route::get('/datakaryawan','KaryawanController@index');
+
 
 //route dataItem
 Route::get('/dataitem/create', 'DataItemController@create');
@@ -141,6 +143,14 @@ Route::get('/datasupplier/show', 'DataSupplierController@show');
 Route::post('/datasupplier/update/{id}', 'DataSupplierController@update');
 Route::get('/datasupplier/destroy/{id}', 'DataSupplierController@destroy');
 
+//route data karyawan
+Route::get('/datakaryawan/store', 'KaryawanController@store');
+Route::get('/datakaryawan/create', 'KaryawanController@create');
+Route::get('/datakaryawan/edit/{id}', 'KaryawanController@edit');
+Route::get('/datakaryawan/show', 'KaryawanController@show');
+Route::post('/datakaryawan/update/{id}', 'KaryawanController@update');
+Route::get('/datakaryawan/destroy/{id}', 'KaryawanController@destroy');
+
 //ROUTE PEMBELIAN
 // route pemesananpembelian
 Route::get('/popembelian', 'PemesananPembelianController@index');
@@ -177,6 +187,7 @@ Route::get('/stokmasuk/create','StokMasukController@create');
 Route::post('/stokmasuk/store','StokMasukController@store');
 Route::get('/kartustok','KartuStokController@index');
 Route::get('/invoicepiutang','InvoiceController@piutang');
+
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');
 // Route::resource('item', 'DataItemController');

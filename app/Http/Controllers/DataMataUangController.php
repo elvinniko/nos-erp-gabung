@@ -15,7 +15,7 @@ class DataMataUangController extends Controller
      */
     public function index()
     {
-        $matauang = DB::table('matauangs')->where('Status','=','OPN')->get();
+        $matauang = DB::table('matauangs')->where('Status','=','OPN')->paginate(2);
         return view('master.dataMataUang', ['matauang' => $matauang]);
 
         // $matauang = matauang::all();

@@ -16,7 +16,7 @@ class DataSupplierController extends Controller
     public function index()
     {
         //$supplier = DB::table('suppliers')->get();
-        $supplier = supplier::where('Status','OPN')->get();
+        $supplier = supplier::where('Status','OPN')->paginate(5);
         return view('master.dataSupplier', ['supplier' => $supplier]);
 
         // $supplier = supplier::all();
