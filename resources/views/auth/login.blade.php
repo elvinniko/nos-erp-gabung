@@ -112,7 +112,7 @@
                 {{ csrf_field() }}
               <h1>NOS-ERP</h1>
               <div {{ $errors->has('name') ? 'has-error' : ''}}>
-                <input type="text" id="name" name="name" class="form-control" placeholder="Username" required="" />
+                <input type="text" id="name" name="email" class="form-control" placeholder="Username" required="" />
                 @if ($errors->has('email'))
                     <span class="help-block text-danger">
                         <strong>{{ $errors->first('email')}}</strong>
@@ -127,14 +127,7 @@
                     </span>
                 @endif
               </div>
-              <div class="form-group">
-                <select class="form-control" name="KodeKategori" id="KodeKategori">
-                    <option value=""> --Pilih Gudang --</option>
-                    @foreach ($lokasi as $l)
-                        <option value="{{ $l->KodeLokasi }}">{{ $l->NamaLokasi }}</option>
-                    @endforeach
-                </select>
-              </div>
+              
               <div>
                 <input type="submit" class="btn btn-primary submit" value="Login">
               </div>

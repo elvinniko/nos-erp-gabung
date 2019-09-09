@@ -186,6 +186,8 @@ Route::get('/stokmasuk','StokMasukController@index');
 Route::get('/stokmasuk/create','StokMasukController@create');
 Route::post('/stokmasuk/store','StokMasukController@store');
 Route::get('/kartustok','KartuStokController@index');
+Route::post('/kartustok/filter','KartuStokController@filter');
+Route::post('/kartustok/print','KartuStokController@print');
 Route::get('/invoicepiutang','InvoiceController@piutang');
 
 // route buat semua controller
