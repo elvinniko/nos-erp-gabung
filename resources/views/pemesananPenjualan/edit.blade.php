@@ -26,11 +26,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h1>Pemesanan Penjualan</h1>
-                    <h3 class="a" style="display: none;">{{$newID}}</h3>
-                    <h3 class="b">{{$newIDP}}</h3>
+                    <h3>{{$id}}</h3>
                 </div>
                 <div class="x_content">
-                    <form action="/sopenjualan/store" method="post" class="formsub" >
+                    <form action="/sopenjualan/update/{{$id}}" class="formsub" method="post">
                         @csrf
 
                         <!-- Contents -->
@@ -38,26 +37,26 @@
                         <div class="form-row">
                             <!-- column 1 -->
                             <div class="form-group col-md-3">
-                                <input type="hidden" class="form-control idp" name="KodeSO" value="{{$newIDP}}">
+                                <input type="hidden" class="form-control" name="KodeSO" value="{{$id}}">
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" required="required" class="form-control" name="Tanggal" id="inputDate">
+                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" value="{{$data->Tanggal}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate2">Tanggal Kirim</label>
-                                    <input type="date" required="required" class="form-control" name="TanggalKirim" id="inputDate2">
+                                    <input type="date" class="form-control" name="TanggalKirim" id="inputDate2" value="{{$data->tgl_kirim}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Masa Berlaku</label>
-                                    <input type="text" required="required" class="form-control" name="Expired" id="inputBerlaku" placeholder="/hari">
+                                    <input type="text" class="form-control" name="Expired" id="inputBerlaku" placeholder="/hari" value="{{$data->Expired}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Term</label>
-                                    <input type="text" required="required" class="form-control" name="Term" id="inputTerm" placeholder="/hari">
+                                    <input type="text" class="form-control" name="Term" id="inputTerm" placeholder="/hari" value="{{$data->term}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">P.O. Customer</label>
-                                    <input type="text"  required="required" class="form-control" name="po" id="inputBerlaku" placeholder="">
+                                    <input type="text" class="form-control" name="po" id="inputBerlaku" placeholder="" value="{{$data->POPelanggan}}">
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -68,7 +67,12 @@
                                     <label for="inputMatauang">Mata Uang</label>
                                     <select class="form-control" required="required" name="KodeMataUang" id="inputMatauang" placeholder="Pilih mata uang">
                                         @foreach($matauang as $mu)
-                                        <option value="{{$mu->KodeMataUang}}">{{$mu->NamaMataUang}}</option>
+                                            @if($data->KodeMataUang == $mu->KodeMataUang) 
+                                                <option value="{{$mu->KodeMataUang}}" selected="">{{$mu->NamaMataUang}}</option>
+                                            @else
+                                                <option value="{{$mu->KodeMataUang}}">{{$mu->NamaMataUang}}</option>
+                                            @endif
+                                        
                                         @endforeach
                                     </select>
                                 </div>
@@ -76,7 +80,12 @@
                                     <label for="inputGudang">Gudang</label>
                                     <select class="form-control" required="required" name="KodeLokasi" id="inputGudang">
                                         @foreach($lokasi as $lok)
-                                        <option value="{{$lok->KodeLokasi}}">{{$lok->NamaLokasi}}</option>
+                                            @if($data->KodeLokasi == $lok->KodeLokasi) 
+                                                <option value="{{$lok->KodeLokasi}}" selected="" >{{$lok->NamaLokasi}}</option>
+                                            @else
+                                                <option value="{{$lok->KodeLokasi}}">{{$lok->NamaLokasi}}</option>
+                                            @endif
+                                        
                                         @endforeach
                                     </select>
                                 </div>
@@ -84,20 +93,32 @@
                                     <label for="inputPelanggan">Pelanggan</label>
                                     <select class="form-control" name="KodePelanggan" id="inputPelanggan">
                                         @foreach($pelanggan as $pel)
-                                        <option value="{{$pel->KodePelanggan}}">{{$pel->NamaPelanggan}}</option>
+                                            @if($data->KodePelanggan == $pel->KodePelanggan) 
+                                                <option value="{{$pel->KodePelanggan}}" selected="">{{$pel->NamaPelanggan}}</option>
+                                            @else
+                                                <option value="{{$pel->KodePelanggan}}">{{$pel->NamaPelanggan}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Diskon</label>
-                                    <input type="number" onchange="disc()" class="diskon form-control" required="required" name="diskon" id="inputBerlaku" placeholder="%">
+                                    <input type="number" onchange="disc()" class="diskon form-control" name="diskon" id="inputBerlaku" placeholder="%" value="{{$data->Diskon}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
                                     <select class="form-control ppn" onchange="ppnfunc(this)" name="ppn" id="ppn">
-                                        <option value="ya">Ya</option>
-                                        <option value="tidak">Tidak</option>
+                                        @if($data->PPN == "ya")
+                                            <option selected="" value="ya">Ya</option>
+                                            <option value="tidak">Tidak</option>
+                                        @else
+                                            <option value="ya">Ya</option>
+                                            <option selected="" value="tidak">Tidak</option>
+                                        @endif
+                                        
                                     </select>
+                                        
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -105,7 +126,7 @@
                             <!-- column 3 -->
                             <div class="form-group col-md-3">
                                 <label for="inputKeterangan">Keterangan</label>
-                                <textarea required="required" class="form-control" name="Keterangan" id="inputKeterangan" rows="5"></textarea>
+                                <textarea class="form-control" name="Keterangan" id="inputKeterangan" rows="5">{{$data->Keterangan}}</textarea>
                                 <br><br>
                                 
                             </div>
@@ -115,8 +136,8 @@
                                 <a href="#" class="btn btn-success" onclick="addrow()">
                                     <i class="fa fa-plus" aria-hidden="true"></i>Tambah Item
                                 </a>
-                                <input type="hidden" value="1" name="totalItem" id="totalItem">
-                                @foreach($item as $itemData)
+                                <input type="hidden" value="{{count($items)}}" name="totalItem" id="totalItem">
+                                @foreach($itemSelect as $itemData)
                                     <input type="hidden" id="{{$itemData->KodeItem}}" value="{{$itemData->HargaJual}}">
                                     <input type="hidden" id="{{$itemData->KodeItem}}Ket" value="{{$itemData->Keterangan}}">
                                     <input type="hidden" id="{{$itemData->KodeItem}}Sat" value="{{$itemData->NamaSatuan}}">
@@ -131,44 +152,59 @@
                                         <td>total</td>
                                         <td></td>
                                     </tr>
-                                    <tr class="rowinput">
+                                    @foreach($items as $a => $item)
+                                    @if($a==0)
+                                        <tr class="rowinput">
+                                    @else
+                                        <tr class="tambah{{$a+1}}">
+                                    @endif
                                         <td>
-                                            <select name="item[]" onchange="barang(this,1);" class="form-control item1">
-                                                @foreach($item as $itemData)
-                                                    <option value="{{$itemData->KodeItem}}">{{$itemData->NamaItem}}</option>
+                                            <select name="item[]" onchange="barang(this,{{$a+1}});" class="form-control item{{$a+1}}">
+                                                @foreach($itemSelect as $itemData)
+                                                    @if($itemData->KodeItem == $item->KodeItem)
+                                                        <option value="{{$itemData->KodeItem}}" selected="">{{$itemData->NamaItem}}</option>
+                                                    @else
+                                                        <option value="{{$itemData->KodeItem}}">{{$itemData->NamaItem}}</option>
+                                                    @endif
                                                 @endforeach
                                             </select>
+                                            
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty(1)" name="qty[]" class="form-control qtyj qty1" required="required" value="0">
+                                            <input type="number" onchange="qty({{$a+1}})" class="form-control qty{{$a+1}}" name="qty[]" required="" value="{{$item->Qty}}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control satuan1" required="" value="0">
+                                            <input type="text" class="form-control satuan{{$a+1}}" required="" readonly="" value="{{$item->NamaSatuan}}">
                                         </td>
                                         <td>
-                                            <input readonly="" type="text" name="price[]" class="form-control price1" required="" value="0">
+                                            <input readonly="" type="text" class="form-control price{{$a+1}}" name="price[]" required="" value="{{$item->Harga}}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control keterangan1" required="" value="0">
+                                            <input type="text" class="form-control keterangan{{$a+1}}" required=""  value="{{$item->Keterangan}}">
                                         </td>
                                         <td>
-                                            <input readonly="" type="text" name="total[]" class="form-control total1" required="" value="0">
+                                            <input readonly="" type="text"  class="form-control total{{$a+1}}" name="total[]" required=""  value="{{$item->Subtotal}}">
                                         </td>
-                                        <td></td>
+                                        @if($a==0)
+                                            <td></td>
+                                        @else
+                                            <td><i onclick="del({{$a+1}})" class="fa fa-trash"></i></td>
+                                        @endif
+                                        
                                     </tr>
+                                    @endforeach
                                 </table>
                                 <div class="col-md-9">
-                                    <button type="submit" class="btn btn-success">Simpan</button>
-                                    <button type="submit" class="btn btn-danger">Batal</button>
+                                    <button type="submit" class="btn btn-success">Update</button>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
-                                    <input type="text" readonly="" class="form-control befDis" value="0" id="inputBerlaku" placeholder="">
+                                    <input type="text" readonly="" class="form-control befDis" name="subtotal" id="inputBerlaku" placeholder="" value="{{$data->Subtotal - $data->NilaiPPN}}">
                                     <label for="inputPelanggan">Nilai PPN</label>
-                                    <input type="text" readonly value="0" name="ppnval" class="ppnval form-control">
-                                    <input type="hidden" value="0" name="diskonval" class="diskonval">
+                                    <input type="text" readonly="" name="ppnval" class="ppnval form-control" value="{{$data->NilaiPPN}}">
+                                    <input type="hidden" name="diskonval" class="diskonval">
                                     <label for="inputPelanggan">Total</label>
-                                    <input type="text" readonly="" class="form-control subtotal" value="0" name="subtotal" id="inputBerlaku" placeholder="">
+                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="" value="{{$data->Subtotal}}">
                                 </div>
                             </div>
                         </div>
@@ -259,7 +295,6 @@
     }
 
     function updatePrice(tot){
-
         $(".subtotal").val(0);
         var diskon=0;
         if($(".diskon").val()!=""){
@@ -274,11 +309,13 @@
         diskon = parseInt($(".subtotal").val())*diskon/100;
         $(".subtotal").val(parseInt($(".subtotal").val())-diskon);
         var ppn =$(".ppn").val();
+        console.log(ppn);
         if(ppn=="ya"){
             ppn = parseInt(befDis)*10/100;
         }else{
             ppn = parseInt(0);
         }
+        console.log(ppn);
         $(".ppnval").val(ppn);
         $(".diskonval").val(diskon);
         $(".befDis").val(parseInt($(".subtotal").val()));
@@ -287,6 +324,7 @@
 
     $('.formsub').submit(function(event){
         tot = $("#totalItem").val();
+        console.log(tot);
         for (var i = 1; i <= tot; i++) {
             if (typeof $(".qty"+i).val()=== 'undefined'){
             }else{

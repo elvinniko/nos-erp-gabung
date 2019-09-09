@@ -28,9 +28,8 @@
                     <h1>Surat Jalan</h1>
                 </div>
                 <div class="x_content">
-                    <form action="/suratJalan/store/{{$id}}" method="post" class="formsub">
+                    <form action="/suratJalan/confirm/{{$id}}" method="post">
                         @csrf
-
                         <!-- Contents -->
                         <br>
                         <div class="form-row">
@@ -38,40 +37,23 @@
                             <div class="form-group col-md-3">
                                 <div class="form-group">
                                     <label for="">No S.O</label>
-                                    <select name="KodeSO" class="form-control" id="KodeSO" onchange="refresh(this)">
-                                        @foreach($pemesananpenjualan as $data)
-                                            @if($data->KodeSO == $id)
-                                                <option selected="selected" value="{{$data->KodeSO}}">{{$data->KodeSO}}</option>
-                                            @else
-                                                <option value="{{$data->KodeSO}}">{{$data->KodeSO}}</option>
-                                            @endif
-                                            
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="Expired" readonly="readonly" value="{{$suratjalan->KodeSO}}" id="inputBerlaku">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" required="required">
+                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" readonly="readonly" value="{{$suratjalan->Tanggal}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Alamat</label>
-                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku" required="required">
+                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku" readonly="readonly" value="{{$suratjalan->Alamat}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Sopir</label>
-                                    <select name="KodeSopir" class="form-control" id="KodeSO" onchange="refresh(this)">
-                                        @foreach($drivers as $data)
-                                            <option selected="selected" value="{{$data->IDKaryawan}}">{{$data->Nama}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="KodeSopir" id="inputBerlaku" readonly="readonly" value="{{$driver->Nama}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputMatauang">Mata Uang</label>
-                                    <select class="form-control" name="KodeMataUang" id="inputMatauang" placeholder="Pilih mata uang">
-                                        @foreach($matauang as $mu)
-                                        <option value="{{$mu->KodeMataUang}}">{{$mu->NamaMataUang}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="KodeSopir" id="inputBerlaku" readonly="readonly" value="{{$matauang->NamaMataUang}}">
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -80,31 +62,23 @@
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                     <label for="inputPO">No Polisi</label>
-                                    <input type="text" class="form-control" name="nopol" required="required">
+                                    <input type="text" class="form-control" name="nopol" readonly="readonly" value="{{$suratjalan->Nopol}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
-                                    <select class="form-control" name="KodeLokasi" id="inputGudang">
-                                        @foreach($lokasis as $lok)
-                                        <option value="{{$lok->KodeLokasi}}">{{$lok->NamaLokasi}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="KodeLokasi" readonly="readonly" value="{{$lokasi->NamaLokasi}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Pelanggan</label>
-                                    <select class="form-control" name="KodePelanggan" id="inputPelanggan">
-                                        @foreach($pelanggans as $pel)
-                                        <option value="{{$pel->KodePelanggan}}">{{$pel->NamaPelanggan}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="KodePelanggan" readonly="readonly" value="{{$pelanggan->KodePelanggan}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Diskon</label>
-                                    <input type="number" readonly="readonly" class="diskon form-control diskon" name="diskon" id="inputBerlaku" value="{{$so->Diskon}}" >
+                                    <input type="number" readonly="readonly" class="diskon form-control diskon" name="diskon" id="inputBerlaku" value="{{$suratjalan->Diskon}}" >
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
-                                    <input type="text" readonly="readonly" class="diskon form-control ppn" name="ppn" id="inputBerlaku" value="{{$so->PPN}}" >
+                                    <input type="text" readonly="readonly" class="diskon form-control ppn" name="ppn" id="inputBerlaku" value="{{$suratjalan->PPN}}" >
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -130,11 +104,10 @@
                                     @foreach($items as $key => $data)
                                     <tr class="rowinput">
                                         <td>
-                                            <input type="text" readonly="readonly" value="{{$data->NamaItem}}">
-                                            <input type="hidden" readonly="readonly" name="item[]" value="{{$data->KodeItem}}">
+                                            <input type="text" readonly="readonly" name="item[]" value="{{$data->NamaItem}}">
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}} qtyj" required="" value="{{$data->jml}}">
+                                            <input type="number" readonly="readonly" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}}" required="" value="{{$data->jml}}">
                                             <input type="hidden" class="max{{$key+1}}" value="{{$data->jml}}">
                                         </td>
                                         <td>
@@ -154,7 +127,7 @@
                                     
                                 </table>
                                 <div class="col-md-9">
-                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                    <button type="submit" class="btn btn-success">Konfirmasi</button>
                                     <button type="submit" class="btn btn-danger">Batal</button>
                                 </div>
                                 <div class="col-md-3">
@@ -221,20 +194,5 @@
         var count =$(".tot").val();
         updatePrice(count);
     }
-
-    $('.formsub').submit(function(event){
-        tot = $(".tot").val();
-        for (var i = 1; i <= tot; i++) {
-            if (typeof $(".qty"+i).val()=== 'undefined'){
-            }else{
-                if ($(".qty"+i).val() == 0){
-                    event.preventDefault();
-                    $(".qty"+i).focus();
-                }
-            }
-            
-        }
-        
-    });
 </script>
 @endsection

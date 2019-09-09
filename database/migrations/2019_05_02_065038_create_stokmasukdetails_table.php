@@ -14,6 +14,7 @@ class CreateStokmasukdetailsTable extends Migration
     public function up()
     {
         Schema::create('stokmasukdetails', function (Blueprint $table) {
+            $table->bigIncrements('id',10);
             $table->string('KodeStokMasuk');
             $table->string('KodeItem');
             $table->string('KodeSatuan');

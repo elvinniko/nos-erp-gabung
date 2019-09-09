@@ -9,6 +9,7 @@ use App\lokasi;
 use App\matauang;
 use App\pelanggan;
 use App\item;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PemesananPenjualanController extends Controller
@@ -46,6 +47,7 @@ class PemesananPenjualanController extends Controller
 
         if ($last_id == null) {
             $newID = "SO-" . $year_now . $month_now . "0001";
+            $newIDP = "SOT-" . $year_now . $month_now . "0001";
         } else {
             $string = $last_id[0]->KodeSO;
             $id = substr($string, -4, 4);
@@ -60,12 +62,14 @@ class PemesananPenjualanController extends Controller
                 $newID = $id + 1;
                 $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
             }
-
+            $newIDP = "SOT-" . $year_now . $month_now . $newID;
             $newID = "SO-" . $year_now . $month_now . $newID;
+            
         }
 
         return view('pemesananPenjualan.buatPenjualan', [
             'newID' => $newID,
+            'newIDP' => $newIDP,
             'pemesananpembelian' => $pemesananpembelian,
             'matauang' => $matauang,
             'lokasi' => $lokasi,
@@ -95,7 +99,6 @@ class PemesananPenjualanController extends Controller
             'Term' => 'required',
         ]);
 
-
         DB::table('pemesananpenjualans')->insert([
             'KodeSO' => $request->KodeSO,
             'Tanggal' => $request->Tanggal,
@@ -108,13 +111,13 @@ class PemesananPenjualanController extends Controller
             'Keterangan' => $request->Keterangan,
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
-            'Total' => 0,
+            'Total' => $request->subtotal,
             'PPN' => $request->ppn,
             'NilaiPPN'=>$request->ppnval,
             'Printed'=>0,
             'Diskon'=>$request->diskon,
             'NilaiDiskon'=>$request->diskonval,
-            'Subtotal'=>$request->subtotal,
+            'Subtotal'=>$request->subtotal-$request->ppnval,
             'KodeSales'=>0,
             'POPelanggan'=>$request->po,
             'created_at' => \Carbon\Carbon::now(),
@@ -149,7 +152,7 @@ class PemesananPenjualanController extends Controller
      */
     public function show($id)
     {   
-        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal from pemesananpenjualans a 
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal, a.NilaiPPN from pemesananpenjualans a 
             inner join matauangs b on b.KodeMataUang = a.KodeMataUang
             inner join lokasis c on c.KodeLokasi = a.KodeLokasi
             inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
@@ -160,6 +163,8 @@ class PemesananPenjualanController extends Controller
             inner join satuans d on c.KodeSatuan = d.KodeSatuan
             where a.KodeSO ='".$id."' ");
         // dd($items);
+        $data->Tanggal = Carbon::parse($data->Tanggal)->format('d/m/Y');
+        $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('d/m/Y');
         return view('pemesananpenjualan.show', compact('data', 'id', 'items'));
     }
 
@@ -171,7 +176,26 @@ class PemesananPenjualanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $matauang = DB::table('matauangs')->get();
+        $lokasi = DB::table('lokasis')->get();
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal, a.NilaiPPN, c.KodeLokasi, d.KodePelanggan, b.KodeMataUang from pemesananpenjualans a 
+            inner join matauangs b on b.KodeMataUang = a.KodeMataUang
+            inner join lokasis c on c.KodeLokasi = a.KodeLokasi
+            inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
+            where a.KodeSO ='".$id."' limit 1")[0];
+        $items = DB::select("SELECT a.Qty,b.KodeItem,b.NamaItem,d.NamaSatuan, a.Harga, a.Subtotal, b.Keterangan  from pemesanan_penjualan_detail a 
+            inner join items b on a.KodeItem = b.KodeItem
+            inner join itemkonversis c on c.KodeItem = a.KodeItem 
+            inner join satuans d on c.KodeSatuan = d.KodeSatuan
+            where a.KodeSO ='".$id."' ");
+        $itemSelect = DB::select("SELECT s.KodeItem, s.NamaItem, k.HargaJual, t.NamaSatuan, s.Keterangan FROM items s 
+            inner join itemkonversis k on k.KodeItem = s.KodeItem 
+            inner join satuans t on k.KodeSatuan = t.KodeSatuan where s.jenisitem='bahanbaku' ");
+        // dd($items);
+        $data->Tanggal = Carbon::parse($data->Tanggal)->format('Y-m-d');
+        $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('Y-m-d');
+        $pelanggan = DB::table('pelanggans')->get();
+        return view('pemesananpenjualan.edit', compact('data', 'id', 'items','itemSelect','lokasi', 'pelanggan','matauang'));
     }
 
     /**
@@ -183,7 +207,49 @@ class PemesananPenjualanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        DB::table('pemesanan_penjualan_detail')->where('KodeSO', '=', $request->KodeSO)->delete();
+        $items = $request->item;
+        $qtys = $request->qty;
+        $prices = $request->price;
+        $totals = $request->total;
+        foreach ($items as $key => $value) {
+            DB::table('pemesanan_penjualan_detail')->insert([
+                'KodeSO' => $request->KodeSO,
+                'KodeItem'=>$items[$key],
+                'Qty' => $qtys[$key],
+                'Harga' => $prices[$key],
+                'NoUrut' => 0,
+                'Subtotal' => $totals[$key],
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+            
+        }
+        DB::table('pemesananpenjualans')
+        ->where('KodeSO', $request->KodeSO)->update([
+            'Tanggal' => $request->Tanggal,
+            'tgl_kirim' => $request->TanggalKirim,
+            'Expired' => $request->Expired,
+            'KodeLokasi' => $request->KodeLokasi,
+            'KodeMataUang' => $request->KodeMataUang,
+            'KodePelanggan' => $request->KodePelanggan,
+            'Term' => $request->Term,
+            'Keterangan' => $request->Keterangan,
+            'Status' => 'OPN',
+            'KodeUser' => 'Admin',
+            'Total' => $request->subtotal,
+            'PPN' => $request->ppn,
+            'NilaiPPN'=>$request->ppnval,
+            'Printed'=>0,
+            'Diskon'=>$request->diskon,
+            'NilaiDiskon'=>$request->diskonval,
+            'Subtotal'=>$request->subtotal-$request->ppnval,
+            'KodeSales'=>0,
+            'POPelanggan'=>$request->po,
+            'updated_at' => \Carbon\Carbon::now(),
+        ]);
+        return redirect('/sopenjualan');
     }
 
     /**

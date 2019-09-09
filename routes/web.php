@@ -64,6 +64,8 @@ Route::get('/batalpemesananPenjualan', 'PagesController@batalPenjualan');
 Route::get('/suratJalan', 'SuratJalanController@index');
 Route::get('/suratJalan/create/{id}','SuratJalanController@create');
 Route::post('/suratJalan/store/{id}','SuratJalanController@store');
+Route::get('/suratJalan/show/{id}','SuratJalanController@show');
+Route::post('/suratJalan/confirm/{id}','SuratJalanController@confirm');
 Route::get('/konfirmasisuratJalan', 'SuratJalanController@konfirmasiSuratJalan');
 
 //route return surat jalan
@@ -171,6 +173,8 @@ Route::get('/sobatal', 'PemesananPenjualanBatalController@index');
 Route::post('/sopenjualan/store', 'PemesananPenjualanController@store');
 Route::get('/sopenjualan/create', 'PemesananPenjualanController@create');
 Route::get('/sopenjualan/show/{id}','PemesananPenjualanController@show');
+Route::get('/sopenjualan/edit/{id}','PemesananPenjualanController@edit');
+Route::post('/sopenjualan/update/{id}','PemesananPenjualanController@update');
 Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
 Route::post('/sopenjualan/confirm/{id}', 'PemesananPenjualanController@confirm');
 
@@ -180,8 +184,9 @@ Route::get('/dikirimpemesananPenjualan', 'PemesananPenjualanController@dikirimPe
 //ROUTE STOK
 Route::get('/stokmasuk','StokMasukController@index');
 Route::get('/stokmasuk/create','StokMasukController@create');
-Route::get('/stokmasuk/store','StokMasukController@store');
-
+Route::post('/stokmasuk/store','StokMasukController@store');
+Route::get('/kartustok','KartuStokController@index');
+Route::get('/invoicepiutang','InvoiceController@piutang');
 
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');
