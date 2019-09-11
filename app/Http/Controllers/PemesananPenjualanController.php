@@ -11,6 +11,7 @@ use App\pelanggan;
 use App\item;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PemesananPenjualanController extends Controller
 {
@@ -274,7 +275,28 @@ class PemesananPenjualanController extends Controller
 
     public function konfirmasiPenjualan(){
         $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
-        return view('pemesananPenjualan.listkonfirmasi',['pemesananpenjualan' => $pemesananpenjualan]);
+        $filter = false;
+        return view('pemesananPenjualan.listkonfirmasi',compact('pemesananpenjualan', 'filter'));
+    }
+
+    public function konfirmasiPenjualanFilter(Request $request){
+        $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM')->where('Tanggal','>=',$request->start)->where('Tanggal','<=',$request->finish);
+        $filter = true;
+        $start = $request->start;
+        $finish = $request->finish;
+        return view('pemesananPenjualan.listkonfirmasi',compact('pemesananpenjualan', 'filter','start','finish'));
+    }
+
+    public function konfirmasiPenjualanPrint(Request $request){
+
+        if($request->start!=null){
+            $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM')->where('Tanggal','>=',$request->start)->where('Tanggal','<=',$request->finish);
+        }else{
+            $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CFM');
+        }
+        $pdf = PDF::loadview('pemesananPenjualan.pdf',['pemesananpenjualan'=>$pemesananpenjualan]);
+
+        return $pdf->download('pemesananpenjualan.pdf');
     }
 
     public function dikirimPenjualan(){

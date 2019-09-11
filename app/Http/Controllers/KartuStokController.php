@@ -49,7 +49,7 @@ class KartuStokController extends Controller
     		$stok = keluarmasukbarang::get();
     	}
     	$pdf = PDF::loadview('kartustok.pdf',['stok'=>$stok]);
-    	return $pdf->download('laporan-pegawai-pdf');
+    	return $pdf->download('kartustok.pdf');
         
     }
 }

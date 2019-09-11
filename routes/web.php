@@ -179,6 +179,8 @@ Route::get('/sopenjualan/destroy/{id}', 'PemesananPenjualanController@destroy');
 Route::post('/sopenjualan/confirm/{id}', 'PemesananPenjualanController@confirm');
 
 Route::get('/konfirmasipemesananPenjualan', 'PemesananPenjualanController@konfirmasiPenjualan');
+Route::post('/konfirmasipemesananPenjualan/filter', 'PemesananPenjualanController@konfirmasiPenjualanFilter');
+Route::post('/konfirmasipemesananPenjualan/print', 'PemesananPenjualanController@konfirmasiPenjualanPrint');
 Route::get('/dikirimpemesananPenjualan', 'PemesananPenjualanController@dikirimPenjualan');
 
 //ROUTE STOK

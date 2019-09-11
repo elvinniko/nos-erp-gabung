@@ -6,7 +6,33 @@
           <div class="card">
             <div class="card-header">
               <h1>Pemesanan Penjualan</h1>
-              <h3>Sales Order</h3>
+              <h2>Filter</h2><br>
+                        <div class="row">
+                            <form action="{{ url('/konfirmasipemesananPenjualan/filter') }}" method="post">
+                                @csrf
+                                <div class="col-md-3">
+                                    <label>Start date</label>
+                                    <input type="date" class="form-control" name="start" required="">
+                                    <label>End date</label>
+                                    <input type="date" class="form-control" name="finish" required="">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                            </form>
+                            <form action="{{ url('/konfirmasipemesananPenjualan/print') }}" method="post">
+                                @csrf
+                                <div class="row pull-right">
+                                    @if($filter)
+                                        <input type="hidden" value="{{$start}}" name="start">
+                                        <input type="hidden" value="{{$finish}}" name="finish">
+                                    @endif
+                                    <input type="submit" name="" value="Print" class="btn btn-danger">
+                                </div>
+                            </form>
+                        </div>
               <br>
             </div>
             <div class="card-body">
