@@ -47,6 +47,7 @@
                     <th>Gudang</th>
                     <th>Pelanggan</th>
                     <th>Term</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                   @foreach ($pemesananpenjualan as $p)
@@ -59,6 +60,7 @@
                         <td>{{ $p->KodeLokasi}}</td>
                         <td>{{ $p->KodePelanggan}}</td>
                         <td>{{ $p->term }}</td>
+                        <th><a href="{{ url('sopenjualan/view/'.$p->KodeSO) }}"><button class="btn btn-primary"><i class="fa fa-eye"></i></button></a></th>
                     </tr>
                   @endforeach
               </table>

@@ -303,4 +303,47 @@ class PemesananPenjualanController extends Controller
         $pemesananpenjualan =pemesananpenjualan::all()->where('Status','CLS');
         return view('pemesananPenjualan.listkonfirmasi',['pemesananpenjualan' => $pemesananpenjualan]);
     }
+
+    public function view($id)
+    {   
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal, a.NilaiPPN from pemesananpenjualans a 
+            inner join matauangs b on b.KodeMataUang = a.KodeMataUang
+            inner join lokasis c on c.KodeLokasi = a.KodeLokasi
+            inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
+            where a.KodeSO ='".$id."' limit 1")[0];
+        $items = DB::select("SELECT a.Qty,b.NamaItem,d.NamaSatuan, a.Harga, a.Subtotal, b.Keterangan  from pemesanan_penjualan_detail a 
+            inner join items b on a.KodeItem = b.KodeItem
+            inner join itemkonversis c on c.KodeItem = a.KodeItem 
+            inner join satuans d on c.KodeSatuan = d.KodeSatuan
+            where a.KodeSO ='".$id."' ");
+        // dd($items);
+        $data->Tanggal = Carbon::parse($data->Tanggal)->format('d/m/Y');
+        $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('d/m/Y');
+        return view('pemesananpenjualan.view', compact('data', 'id', 'items'));
+    }
+
+    public function print($id)
+    {   
+        $data = DB::select("SELECT a.KodeSo, a.Tanggal, a.tgl_kirim,a.Expired,a.term, a.POPelanggan, b.NamaMataUang, c.NamaLokasi, d.NamaPelanggan, a.Keterangan, a.Diskon, a.PPN, a.Subtotal, a.NilaiPPN from pemesananpenjualans a 
+            inner join matauangs b on b.KodeMataUang = a.KodeMataUang
+            inner join lokasis c on c.KodeLokasi = a.KodeLokasi
+            inner join pelanggans d on d.KodePelanggan = a.KodePelanggan
+            where a.KodeSO ='".$id."' limit 1")[0];
+        $items = DB::select("SELECT a.Qty,b.NamaItem,d.NamaSatuan, a.Harga, a.Subtotal, b.Keterangan  from pemesanan_penjualan_detail a 
+            inner join items b on a.KodeItem = b.KodeItem
+            inner join itemkonversis c on c.KodeItem = a.KodeItem 
+            inner join satuans d on c.KodeSatuan = d.KodeSatuan
+            where a.KodeSO ='".$id."' ");
+        $jml = 0;
+        foreach ($items as $value) {
+            $jml += $value->Qty;
+        }
+        $data->Tanggal = Carbon::parse($data->Tanggal)->format('d/m/Y');
+        $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('d/m/Y');
+
+        $pdf = PDF::loadview('pemesananPenjualan.pdfdetail',compact('data', 'id', 'items', 'jml'));
+
+        return $pdf->download('pemesananpenjualandetail.pdf');
+        return view('pemesananpenjualan.pdfdetail', compact('data', 'id', 'items', 'jml'));
+    }
 }
