@@ -48,7 +48,17 @@ class KartuStokController extends Controller
     	}else{
     		$stok = keluarmasukbarang::get();
     	}
-    	$pdf = PDF::loadview('kartustok.pdf',['stok'=>$stok]);
+        $in =0;
+        $out =0;
+        foreach ($stok as $s) {
+            if($s->Qty>0){
+                $in+=$s->Qty;
+            }else{
+                $out+=$s->Qty*-1;
+            }
+            
+        }
+    	$pdf = PDF::loadview('kartustok.pdf',['stok'=>$stok,'in'=>$in,'out'=>$out]);
     	return $pdf->download('kartustok.pdf');
         
     }

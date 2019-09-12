@@ -9,7 +9,7 @@
                         <h1>Kartu Stok</h1><br>
                     </div>
                     <div class="x_body">
-                        <table class="table table-light">
+                        <table border="1px solid black">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Tanggal Transaksi</th>
@@ -39,6 +39,12 @@
                                         <td>{{ $stokmasuk->indexmov}}</td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                        <td colspan="4">Masuk</td>
+                                        <td>{{ $in }}</td>
+                                        <td colspan="4">Keluar</td>
+                                        <td>{{ $out }}</td>
+                                    </tr>
                             </tbody>
                         </table>
                     </div>
