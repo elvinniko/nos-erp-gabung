@@ -65,6 +65,8 @@ Route::get('/suratJalan', 'SuratJalanController@index');
 Route::get('/suratJalan/create/{id}','SuratJalanController@create');
 Route::post('/suratJalan/store/{id}','SuratJalanController@store');
 Route::get('/suratJalan/show/{id}','SuratJalanController@show');
+Route::get('/suratJalan/view/{id}','SuratJalanController@view');
+Route::get('/suratJalan/print/{id}','SuratJalanController@print');
 Route::post('/suratJalan/confirm/{id}','SuratJalanController@confirm');
 Route::get('/konfirmasisuratJalan', 'SuratJalanController@konfirmasiSuratJalan');
 
