@@ -22,6 +22,7 @@
                                     <th>ID User</th>
                                     <th>idx</th>
                                     <th>indexmov</th>
+                                    <th>Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,14 +38,10 @@
                                         <td>{{ $stokmasuk->KodeUser}}</td>
                                         <td>{{ $stokmasuk->idx }}</td>
                                         <td>{{ $stokmasuk->indexmov}}</td>
+                                        <td>{{ $stokmasuk->saldo}}</td>
                                     </tr>
                                 @endforeach
-                                <tr>
-                                        <td colspan="4">Masuk</td>
-                                        <td>{{ $in }}</td>
-                                        <td colspan="4">Keluar</td>
-                                        <td>{{ $out }}</td>
-                                    </tr>
+                                
                             </tbody>
                         </table>
                     </div>
