@@ -14,7 +14,9 @@ class CreateSuratjalanreturnsTable extends Migration
     public function up()
     {
         Schema::create('suratjalanreturns', function (Blueprint $table) {
-            $table->string('KodeSuratJalan');
+            $table->bigIncrements('KodeSuratJalanReturnId',10);
+            $table->integer('KodeSuratJalanId');
+            $table->string('KodeSuratJalanReturn');
             $table->datetime('Tanggal');
             $table->string('Status');
             $table->string('KodeUser');
@@ -25,7 +27,6 @@ class CreateSuratjalanreturnsTable extends Migration
             $table->double('Diskon');
             $table->double('NilaiDiskon');
             $table->double('Subtotal');
-            $table->string('KodeSuratJalanReturn');
             $table->timestamps();
         });
     }

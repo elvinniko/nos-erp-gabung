@@ -91,6 +91,7 @@
                     </li>
                     <li><a>Return Surat jalan<span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
+                        <li><a href="{{ url('/returnSuratJalan/add/0') }}">Buat Return Surat Jalan </a></li>
                         <li><a href="{{ url('/returnSuratJalan') }}">Return Surat Jalan </a></li>
                         <li><a href="{{ url('/konfirmasireturnSuratJalan') }}">Konfirmasi Surat jalan</a></li>
                       </ul>

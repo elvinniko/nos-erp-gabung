@@ -71,6 +71,8 @@ Route::post('/suratJalan/confirm/{id}','SuratJalanController@confirm');
 Route::get('/konfirmasisuratJalan', 'SuratJalanController@konfirmasiSuratJalan');
 
 //route return surat jalan
+Route::get('/returnSuratJalan/add/{id}', 'ReturnSuratJalanController@add');
+Route::post('/returnSuratJalan/store/{id}', 'ReturnSuratJalanController@store');
 Route::get('/returnSuratJalan', 'PagesController@returnSuratJalan');
 Route::get('/konfirmasireturnSuratJalan', 'PagesController@konfirmasiReturnSuratJalan');
 
