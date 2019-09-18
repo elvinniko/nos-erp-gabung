@@ -28,42 +28,32 @@
                     <h1>Return Surat Jalan</h1>
                 </div>
                 <div class="x_content">
-                    <form action="/returnSuratJalan/store/{{$id}}" method="post" class="formsub">
+                    <form action="/returnSuratJalan/confirm/{{$id}}" method="post">
                         @csrf
-
                         <!-- Contents -->
                         <br>
                         <div class="form-row">
                             <!-- column 1 -->
                             <div class="form-group col-md-3">
                                 <div class="form-group">
-                                    <label for="">No S.J</label>
-                                    <select name="KodeSJ" class="form-control" id="KodeSJ" onchange="refresh(this)">
-                                        @foreach($sj as $data)
-                                            @if($data->KodeSuratJalanID == $id)
-                                                <option selected="selected" value="{{$data->KodeSuratJalanID}}">{{$data->KodeSuratJalan}}</option>
-                                            @else
-                                                <option value="{{$data->KodeSuratJalanID}}">{{$data->KodeSuratJalan}}</option>
-                                            @endif
-                                            
-                                        @endforeach
-                                    </select>
+                                    <label for="">No SJT</label>
+                                    <input type="text" class="form-control" name="Expired" readonly="readonly" value="{{$suratjalanreturn->KodeSuratJalanReturn}}" id="inputBerlaku">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDate">Tanggal</label>
-                                    <input type="date" class="form-control" name="Tanggal" id="inputDate" required="required">
+                                    <input type="text" class="form-control" name="Tanggal" id="inputDate" readonly="readonly" value="{{$suratjalanreturn->Tanggal}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputBerlaku">Alamat</label>
-                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku" value="{{$sjDet->Alamat}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="Alamat" id="inputBerlaku" readonly="readonly" value="{{$suratjalan->Alamat}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputTerm">Sopir</label>
-                                    <input type="text" class="form-control" name="KodeSopir" id="inputBerlaku" value="{{$sjDet->sopir->Nama}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="KodeSopir" id="inputBerlaku" readonly="readonly" value="{{$driver->Nama}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputMatauang">Mata Uang</label>
-                                    <input type="text" class="form-control" name="KodeMataUang" id="KodeMataUang" value="{{$sjDet->uang->NamaMataUang}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="KodeSopir" id="inputBerlaku" readonly="readonly" value="{{$matauang->NamaMataUang}}">
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -72,23 +62,23 @@
                             <div class="form-group col-md-4">
                                 <div class="form-group">
                                     <label for="inputPO">No Polisi</label>
-                                    <input type="text" class="form-control" name="nopol" value="{{$sjDet->Nopol}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="nopol" readonly="readonly" value="{{$suratjalan->Nopol}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputGudang">Gudang</label>
-                                    <input type="text" class="form-control" name="KodeLokasi" id="NamaLokasi" value="{{$sjDet->gudang->NamaLokasi}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="KodeLokasi" readonly="readonly" value="{{$lokasi->NamaLokasi}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Pelanggan</label>
-                                    <input type="text" class="form-control" name="KodePelanggan" id="KodePelanggan" value="{{$sjDet->pelanggan->NamaPelanggan}}" readonly="" required="required">
+                                    <input type="text" class="form-control" name="KodePelanggan" readonly="readonly" value="{{$pelanggan->KodePelanggan}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">Diskon</label>
-                                    <input type="number" readonly="readonly" class="diskon form-control diskon" name="diskon" id="inputBerlaku" value="{{$so->Diskon}}" >
+                                    <input type="number" readonly="readonly" class="diskon form-control diskon" name="diskon" id="inputBerlaku" value="{{$suratjalan->Diskon}}" >
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPelanggan">PPn</label>
-                                    <input type="text" readonly="readonly" class="diskon form-control ppn" name="ppn" id="inputBerlaku" value="{{$so->PPN}}" >
+                                    <input type="text" readonly="readonly" class="diskon form-control ppn" name="ppn" id="inputBerlaku" value="{{$suratjalan->PPN}}" >
                                 </div>
                             </div>
                             <!-- pembatas -->
@@ -114,11 +104,10 @@
                                     @foreach($items as $key => $data)
                                     <tr class="rowinput">
                                         <td>
-                                            <input type="text" readonly="readonly" value="{{$data->NamaItem}}">
-                                            <input type="hidden" readonly="readonly" name="item[]" value="{{$data->KodeItem}}">
+                                            <input type="text" readonly="readonly" name="item[]" value="{{$data->NamaItem}}">
                                         </td>
                                         <td>
-                                            <input type="number" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}} qtyj" required="" value="{{$data->jml}}">
+                                            <input type="number" readonly="readonly" onchange="qty({{$key+1}})" name="qty[]" class="form-control qty{{$key+1}}" required="" value="{{$data->jml}}">
                                             <input type="hidden" class="max{{$key+1}}" value="{{$data->jml}}">
                                         </td>
                                         <td>
@@ -138,18 +127,18 @@
                                     
                                 </table>
                                 <div class="col-md-9">
-                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                    <button type="submit" class="btn btn-success">Konfirmasi</button>
                                     <button type="submit" class="btn btn-danger">Batal</button>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="inputPelanggan">Subtotal</label>
                                     <input type="hidden" value="{{sizeof($items)}}" name="" class="tot">
-                                    <input type="text" readonly="" class="form-control befDis" name="subtotal" id="inputBerlaku" placeholder="">
+                                    <input type="text" readonly="" class="form-control befDis" id="inputBerlaku" placeholder="">
                                     <label for="inputPelanggan">Nilai PPN</label>
                                     <input type="text" readonly="" name="ppnval" class="ppnval form-control">
                                     <input type="hidden" name="diskonval" class="diskonval ">
                                     <label for="inputPelanggan">Total</label>
-                                    <input type="text" readonly="" class="form-control subtotal" name="total" id="inputBerlaku" placeholder="">
+                                    <input type="text" readonly="" class="form-control subtotal" name="subtotal" id="inputBerlaku" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -162,7 +151,7 @@
 <script type="text/javascript">
     
     function refresh(val){
-        var base ="{{ url('/') }}"+"/returnSuratJalan/add/"+val.value;
+        var base ="{{ url('/') }}"+"/suratJalan/create/"+val.value;
         window.location.href = base;
     }
 
@@ -205,20 +194,5 @@
         var count =$(".tot").val();
         updatePrice(count);
     }
-
-    $('.formsub').submit(function(event){
-        tot = $(".tot").val();
-        for (var i = 1; i <= tot; i++) {
-            if (typeof $(".qty"+i).val()=== 'undefined'){
-            }else{
-                if ($(".qty"+i).val() == 0){
-                    event.preventDefault();
-                    $(".qty"+i).focus();
-                }
-            }
-            
-        }
-        
-    });
 </script>
 @endsection

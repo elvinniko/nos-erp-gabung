@@ -73,7 +73,9 @@ Route::get('/konfirmasisuratJalan', 'SuratJalanController@konfirmasiSuratJalan')
 //route return surat jalan
 Route::get('/returnSuratJalan/add/{id}', 'ReturnSuratJalanController@add');
 Route::post('/returnSuratJalan/store/{id}', 'ReturnSuratJalanController@store');
-Route::get('/returnSuratJalan', 'PagesController@returnSuratJalan');
+Route::get('/returnSuratJalan', 'ReturnSuratJalanController@index');
+Route::get('/returnSuratJalan/show/{id}','ReturnSuratJalanController@show');
+Route::post('/returnSuratJalan/confirm/{id}','ReturnSuratJalanController@confirm');
 Route::get('/konfirmasireturnSuratJalan', 'PagesController@konfirmasiReturnSuratJalan');
 
 //route penjualan langsung

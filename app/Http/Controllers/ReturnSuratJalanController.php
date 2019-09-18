@@ -11,6 +11,8 @@ use App\matauang;
 use App\lokasi;
 use App\pelanggan;
 use Carbon\Carbon;
+use App\suratjalanreturn;
+use App\invoicepiutangdetail;
 use PDF;
 
 class ReturnSuratJalanController extends Controller
@@ -85,7 +87,7 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
             'Tanggal' => $request->Tanggal,
             'Status' => 'OPN',
             'KodeUser' => 'Admin',
-            'Total' => 0,
+            'Total' => $request->total,
             'PPN' => $request->ppn,
             'NilaiPPN'=>$request->ppnval,
             'Printed'=>0,
@@ -118,9 +120,91 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
 
     public function index()
     {
-        $suratjalans = suratjalan::where('Status','OPN')->get();
-        return view('suratJalan.suratJalan',compact('suratjalans'));
+        $suratjalanreturns = suratjalanreturn::where('Status','OPN')->get();
+        return view('returnSuratJalan.index',compact('suratjalanreturns'));
     }
+
+    public function show($id)
+    {
+        $suratjalanreturn = suratjalanreturn::where('KodeSuratJalanReturnId',$id)->first();
+        $suratjalan = suratjalan::where('KodeSuratJalanID',$suratjalanreturn->KodeSuratJalanId)->first();
+        $driver = karyawan::where('IDKaryawan',$suratjalan->KodeSopir)->first();
+        $matauang = matauang::where('KodeMataUang',$suratjalan->KodeMataUang)->first();
+        $lokasi = lokasi::where('KodeLokasi',$suratjalan->KodeLokasi)->first();
+        $pelanggan = pelanggan::where('KodePelanggan',$suratjalan->KodePelanggan)->first();
+        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual 
+            FROM suratjalanreturndetails a 
+            inner join suratjalanreturns b on a.KodeSuratJalanReturn = b.KodeSuratJalanReturn
+            inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where b.KodeSuratJalanReturnId='".$id."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        return view('returnSuratJalan.show', compact('id','suratjalanreturn','driver','matauang','lokasi','pelanggan','items','suratjalan'));
+    }
+
+    public function confirm($id)
+    {
+        
+        $suratjalanreturn = suratjalanreturn::where('KodeSuratJalanReturnId',$id)->first();
+        $suratjalanreturn->Status = "CFM";
+        $suratjalanreturn->save();
+        $suratjalan = suratjalan::where('KodeSuratJalanID',$suratjalanreturn->KodeSuratJalanId)->first();
+        $invoice = invoicepiutangdetail::where('KodeSuratJalan',$suratjalanreturn->KodeSuratJalanId)->first();
+        $now = $invoice->Subtotal;
+        $invoice->Subtotal = $now - $suratjalanreturn->Total;
+        $invoice->save();
+        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalanreturndetails a inner join suratjalanreturns sj on a.KodeSuratJalanReturn = sj.KodeSuratJalanReturn inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where sj.KodeSuratJalanReturnId=".$id." group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        $last_id = DB::select('SELECT * FROM stokkeluars ORDER BY KodeStokKeluar DESC LIMIT 1');
+
+        $year_now = date('y');
+        $month_now = date('m');
+        $date_now = date('d');
+
+        if ($last_id == null) {
+            $newID = "SLM-" . $year_now . $month_now . "0001";
+        } else {
+            $string = $last_id[0]->KodeStokKeluar;
+            $id = substr($string, -4, 4);
+            $month = substr($string, -6, 2);
+            $year = substr($string, -8, 2);
+
+            if ((int) $year_now > (int) $year) {
+                $newID = "0001";
+            } else if ((int) $month_now > (int) $month) {
+                $newID = "0001";
+            } else {
+                $newID = $id + 1;
+                $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
+            }
+
+            $newID = "SLM-" . $year_now . $month_now . $newID;
+        }
+        $tot = 0;
+    
+        foreach ($items as $key => $value) {
+            $tot += $value->jml;
+        }
+
+        foreach ($items as $key => $value) {
+            DB::table('keluarmasukbarangs')->insert([
+                'Tanggal' => $suratjalanreturn->Tanggal,
+                'KodeLokasi' => $suratjalan->KodeLokasi,
+                'KodeItem' => $value->KodeItem,
+                'JenisTransaksi'=>'SJB',
+                'KodeTransaksi'=>$suratjalanreturn->KodeSuratJalanReturn,
+                'Qty' => $value->jml,
+                'HargaRata'=>0,
+                'KodeUser'=>'Admin',
+                'idx'=>0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
+            ]);
+        }
+
+        return redirect('/konfirmasireturnSuratJalan');
+    }
+
+
+
+
+
 
     public function konfirmasiSuratJalan()
     {
@@ -149,16 +233,7 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $suratjalan = suratjalan::where('KodeSuratJalanID',$id)->first();
-        $driver = karyawan::where('IDKaryawan',$suratjalan->KodeSopir)->first();
-        $matauang = matauang::where('KodeMataUang',$suratjalan->KodeMataUang)->first();
-        $lokasi = lokasi::where('KodeLokasi',$suratjalan->KodeLokasi)->first();
-        $pelanggan = pelanggan::where('KodePelanggan',$suratjalan->KodePelanggan)->first();
-        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalan='".$suratjalan->KodeSuratJalan."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
-        return view('suratJalan.showSuratJalan', compact('id','suratjalan','driver','matauang','lokasi','pelanggan','items'));
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -194,114 +269,7 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
         //
     }
 
-    public function confirm($id)
-    {
 
-        $data = suratjalan::where('KodeSuratJalanID',$id)->first();
-        $data->Status = "CFM";
-        $data->save();
-        $so = pemesananpenjualan::find($data->KodeSO);
-        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalan='".$data->KodeSuratJalan."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
-        $lastID =DB::table('invoicepiutangs')->insertGetId([
-            'Tanggal' => $data->Tanggal,
-            'KodePelanggan' => $data->KodePelanggan,
-            'Status' => 'OPN',
-            'Total' => $so->Total,
-            'Keterangan' => $so->keterangan,
-            'KodeMataUang' => $data->KodeMataUang,
-            'KodeUser' => 'Admin',
-            'Term' => $so->term,
-            'KodeLokasi' => $data->KodeLokasi,
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now(),
-        ]);
-
-        DB::table('invoicepiutangdetails')->insert([
-            'KodePiutang'=>$lastID,
-            'KodeSuratJalan' => $data->KodeSuratJalanID,
-            'Subtotal' => $data->Subtotal,
-            'KodeInvoicePiutang' => $lastID,
-            'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now(),
-        ]);
-        
-        $last_id = DB::select('SELECT * FROM stokkeluars ORDER BY KodeStokKeluar DESC LIMIT 1');
-
-        $year_now = date('y');
-        $month_now = date('m');
-        $date_now = date('d');
-
-        if ($last_id == null) {
-            $newID = "SLM-" . $year_now . $month_now . "0001";
-        } else {
-            $string = $last_id[0]->KodeStokKeluar;
-            $id = substr($string, -4, 4);
-            $month = substr($string, -6, 2);
-            $year = substr($string, -8, 2);
-
-            if ((int) $year_now > (int) $year) {
-                $newID = "0001";
-            } else if ((int) $month_now > (int) $month) {
-                $newID = "0001";
-            } else {
-                $newID = $id + 1;
-                $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
-            }
-
-            $newID = "SLM-" . $year_now . $month_now . $newID;
-        }
-        $tot = 0;
-    
-        foreach ($items as $key => $value) {
-            $tot += $value->jml;
-        }
-
-        foreach ($items as $key => $value) {
-            DB::table('keluarmasukbarangs')->insert([
-                'Tanggal' => $data->Tanggal,
-                'KodeLokasi' => $data->KodeLokasi,
-                'KodeItem' => $value->KodeItem,
-                'JenisTransaksi'=>'SJB',
-                'KodeTransaksi'=>$data->KodeSuratJalan,
-                'Qty' => -$value->jml,
-                'HargaRata'=>0,
-                'KodeUser'=>'Admin',
-                'idx'=>0,
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now()
-            ]);
-        }
-
-        // $updateSO = pemesananpenjualan::where('KodeSO',$data->KodeSO)->first();
-        // $updateSO->Status = "CLS";
-        // $updateSO->save();
-             
-        // DB::table('stokkeluars')->insert([
-        //     'KodeStokKeluar' => $newID,
-        //     'KodeLokasi' => $data->KodeLokasi,
-        //     'Tanggal' => $data->Tanggal,
-        //     'Status' => 'CFM',
-        //     'Printed' => 0,
-        //     'TotalItem' => $tot,
-        //     'KodeUser' => 'Admin',
-        //     'created_at' => \Carbon\Carbon::now(),
-        //     'updated_at' => \Carbon\Carbon::now()
-        // ]);
-        // foreach ($items as $key => $value) {
-        //     DB::table('stokkeluardetails')->insert([
-        //         'KodeStokKeluar' => $newID,
-        //         'KodeItem' => $value->KodeItem,
-        //         'Qty' => $value->jml,
-        //         'KodeSatuan' => '',
-        //         'Keterangan' => '',
-        //         'NoUrut' => 0,
-        //         'created_at' => \Carbon\Carbon::now(),
-        //         'updated_at' => \Carbon\Carbon::now()
-        //     ]);
-        // }
-
-        return redirect('/konfirmasisuratJalan');
-    }
 
     public function view($id)
     {
