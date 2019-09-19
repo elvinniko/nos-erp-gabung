@@ -75,8 +75,10 @@ Route::get('/returnSuratJalan/add/{id}', 'ReturnSuratJalanController@add');
 Route::post('/returnSuratJalan/store/{id}', 'ReturnSuratJalanController@store');
 Route::get('/returnSuratJalan', 'ReturnSuratJalanController@index');
 Route::get('/returnSuratJalan/show/{id}','ReturnSuratJalanController@show');
+Route::get('/returnSuratJalan/view/{id}','ReturnSuratJalanController@view');
+Route::post('/returnSuratJalan/print/{id}','ReturnSuratJalanController@print');
 Route::post('/returnSuratJalan/confirm/{id}','ReturnSuratJalanController@confirm');
-Route::get('/konfirmasireturnSuratJalan', 'PagesController@konfirmasiReturnSuratJalan');
+Route::get('/konfirmasireturnSuratJalan', 'ReturnSuratJalanController@konfirmasiSuratJalanReturn');
 
 //route penjualan langsung
 Route::get('/penjualanLangsung', 'PagesController@penjualanLangsung');

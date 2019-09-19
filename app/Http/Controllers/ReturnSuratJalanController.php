@@ -201,46 +201,52 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
         return redirect('/konfirmasireturnSuratJalan');
     }
 
-
-
-
-
-
-    public function konfirmasiSuratJalan()
+    public function konfirmasiSuratJalanReturn()
     {
-        $suratjalans = suratjalan::where('Status','CFM')->get();
-        return view('suratJalan.konfirmasiSuratJalan',compact('suratjalans'));
+        $suratjalanreturns = suratjalanreturn::where('Status','CFM')->get();
+        return view('returnSuratJalan.listkonfirmasi',compact('suratjalanreturns'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
+    public function view($id)
+    {
+        $suratjalanreturn = suratjalanreturn::where('KodeSuratJalanReturnId',$id)->first();
+        $suratjalan = suratjalan::where('KodeSuratJalanID',$suratjalanreturn->KodeSuratJalanId)->first();
+        $driver = karyawan::where('IDKaryawan',$suratjalan->KodeSopir)->first();
+        $matauang = matauang::where('KodeMataUang',$suratjalan->KodeMataUang)->first();
+        $lokasi = lokasi::where('KodeLokasi',$suratjalan->KodeLokasi)->first();
+        $pelanggan = pelanggan::where('KodePelanggan',$suratjalan->KodePelanggan)->first();
+        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual 
+            FROM suratjalanreturndetails a 
+            inner join suratjalanreturns b on a.KodeSuratJalanReturn = b.KodeSuratJalanReturn
+            inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where b.KodeSuratJalanReturnId='".$id."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        return view('returnSuratJalan.view', compact('id','suratjalanreturn','driver','matauang','lokasi','pelanggan','items','suratjalan'));
+    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    
+    public function print($id)
+    {   
+        $data = 
+        DB::select("select sj.*,a.*,b.Keterangan from suratjalanreturns a 
+            left join suratjalans sj on sj.KodeSuratJalanID = a.KodeSuratJalanId
+            left join pemesananpenjualans b on sj.KodeSO = b.KodeSO  where a.KodeSuratJalanReturnId = '".$id."'")[0];
+        // suratjalan::where('KodeSuratJalanID',$id)->first();
+        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalanreturndetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalanReturn='".$data->KodeSuratJalanReturn."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        $jml = 0;
+        foreach ($items as $value) {
+            $jml += $value->jml;
+        }
+        // dd($data);
+        $data->Tanggal = Carbon::parse($data->Tanggal)->format('d/m/Y');
+        // $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('d/m/Y');
+        
+        $pdf = PDF::loadview('returnSuratJalan.print',compact('data', 'id', 'items', 'jml'));
+        
+        return $pdf->download('returnSuratJalan.pdf');
+    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function edit($id)
     {
         //
@@ -271,34 +277,7 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
 
 
 
-    public function view($id)
-    {
-        $suratjalan = suratjalan::where('KodeSuratJalanID',$id)->first();
-        $driver = karyawan::where('IDKaryawan',$suratjalan->KodeSopir)->first();
-        $matauang = matauang::where('KodeMataUang',$suratjalan->KodeMataUang)->first();
-        $lokasi = lokasi::where('KodeLokasi',$suratjalan->KodeLokasi)->first();
-        $pelanggan = pelanggan::where('KodePelanggan',$suratjalan->KodePelanggan)->first();
-        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalan='".$suratjalan->KodeSuratJalan."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
-        return view('suratJalan.viewSuratJalan', compact('id','suratjalan','driver','matauang','lokasi','pelanggan','items'));
-    }
+    
 
-    public function print($id)
-    {   
-        $data = 
-        DB::select("select a.*,b.Keterangan from suratjalans a 
-            left join pemesananpenjualans b on a.KodeSO = b.KodeSO  where a.KodeSuratJalanID = '".$id."'")[0];
-        // suratjalan::where('KodeSuratJalanID',$id)->first();
-        $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalan='".$data->KodeSuratJalan."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
-        $jml = 0;
-        foreach ($items as $value) {
-            $jml += $value->jml;
-        }
-        // dd($data);
-        $data->Tanggal = Carbon::parse($data->Tanggal)->format('d/m/Y');
-        // $data->tgl_kirim = Carbon::parse($data->tgl_kirim)->format('d/m/Y');
-
-        $pdf = PDF::loadview('suratJalan.pdfdetail',compact('data', 'id', 'items', 'jml'));
-        
-        return $pdf->download('suratjalandetail.pdf');
-    }
+    
 }
