@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h1>Kartu Stok</h1><br>
+                        <h1>Invoice Piutang</h1><br>
                     </div>
                     <div class="x_body">
                         <table class="table table-light">
