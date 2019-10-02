@@ -141,7 +141,6 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
 
     public function confirm($id)
     {
-        
         $suratjalanreturn = suratjalanreturn::where('KodeSuratJalanReturnId',$id)->first();
         $suratjalanreturn->Status = "CFM";
         $suratjalanreturn->save();
@@ -150,6 +149,10 @@ FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner joi
         $now = $invoice->Subtotal;
         $invoice->Subtotal = $now - $suratjalanreturn->Total;
         $invoice->save();
+        $invoMaster = $invoice->invoicepiutang;
+        $now = $invoMaster->Total;
+        $invoMaster->Total = $now - $suratjalanreturn->Total;
+        $invoMaster->save();
         $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalanreturndetails a inner join suratjalanreturns sj on a.KodeSuratJalanReturn = sj.KodeSuratJalanReturn inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where sj.KodeSuratJalanReturnId=".$id." group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
         $last_id = DB::select('SELECT * FROM stokkeluars ORDER BY KodeStokKeluar DESC LIMIT 1');
 

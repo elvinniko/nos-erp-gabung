@@ -201,7 +201,7 @@ Route::get('/kartustok','KartuStokController@index');
 Route::post('/kartustok/filter','KartuStokController@filter');
 Route::post('/kartustok/print','KartuStokController@print');
 Route::get('/invoicepiutang','InvoiceController@piutang');
-
+Route::get('/fixinvoicepiutang','SuratJalanController@fixInvoideID');
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');
 // Route::resource('item', 'DataItemController');

@@ -12,6 +12,7 @@ use App\lokasi;
 use App\pelanggan;
 use Carbon\Carbon;
 use PDF;
+use App\invoicepiutang;
 
 class SuratJalanController extends Controller
 {
@@ -200,6 +201,33 @@ class SuratJalanController extends Controller
         $data->save();
         $so = pemesananpenjualan::find($data->KodeSO);
         $items = DB::select("sELECT a.KodeItem,i.NamaItem, SUM(a.Qty) as jml, i.Keterangan, s.NamaSatuan, k.HargaJual FROM suratjalandetails a inner join items i on a.KodeItem = i.KodeItem inner join itemkonversis k on i.KodeItem = k.KodeItem inner join satuans s on s.KodeSatuan = k.KodeSatuan where a.KodeSuratJalan='".$data->KodeSuratJalan."' group by a.KodeItem, i.Keterangan, s.NamaSatuan, k.HargaJual, i.NamaItem ");
+        
+        $last_id = DB::select('SELECT * FROM invoicepiutangs ORDER BY KodeInvoicePiutang DESC LIMIT 1');
+
+        $year_now = date('y');
+        $month_now = date('m');
+        $date_now = date('d');
+        $pref = "IVP";
+        if ($last_id == null) {
+            $newID = $pref."-" . $year_now . $month_now . "0001";
+        } else {
+            $string = $last_id[0]->KodeInvoicePiutangShow;
+            $ids = substr($string, -4, 4);
+            $month = substr($string, -6, 2);
+            $year = substr($string, -8, 2);
+
+            if ((int) $year_now > (int) $year) {
+                $newID = "0001";
+            } else if ((int) $month_now > (int) $month) {
+                $newID = "0001";
+            } else {
+                $newID = $ids + 1;
+                $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
+            }
+
+            $newID = $pref."-" . $year_now . $month_now . $newID;
+        }
+
         $lastID =DB::table('invoicepiutangs')->insertGetId([
             'Tanggal' => $data->Tanggal,
             'KodePelanggan' => $data->KodePelanggan,
@@ -212,6 +240,7 @@ class SuratJalanController extends Controller
             'KodeLokasi' => $data->KodeLokasi,
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
+            'KodeInvoicePiutangShow'=>$newID,
         ]);
 
         DB::table('invoicepiutangdetails')->insert([
@@ -270,34 +299,6 @@ class SuratJalanController extends Controller
             ]);
         }
 
-        // $updateSO = pemesananpenjualan::where('KodeSO',$data->KodeSO)->first();
-        // $updateSO->Status = "CLS";
-        // $updateSO->save();
-             
-        // DB::table('stokkeluars')->insert([
-        //     'KodeStokKeluar' => $newID,
-        //     'KodeLokasi' => $data->KodeLokasi,
-        //     'Tanggal' => $data->Tanggal,
-        //     'Status' => 'CFM',
-        //     'Printed' => 0,
-        //     'TotalItem' => $tot,
-        //     'KodeUser' => 'Admin',
-        //     'created_at' => \Carbon\Carbon::now(),
-        //     'updated_at' => \Carbon\Carbon::now()
-        // ]);
-        // foreach ($items as $key => $value) {
-        //     DB::table('stokkeluardetails')->insert([
-        //         'KodeStokKeluar' => $newID,
-        //         'KodeItem' => $value->KodeItem,
-        //         'Qty' => $value->jml,
-        //         'KodeSatuan' => '',
-        //         'Keterangan' => '',
-        //         'NoUrut' => 0,
-        //         'created_at' => \Carbon\Carbon::now(),
-        //         'updated_at' => \Carbon\Carbon::now()
-        //     ]);
-        // }
-
         return redirect('/konfirmasisuratJalan');
     }
 
@@ -331,4 +332,37 @@ class SuratJalanController extends Controller
         
         return $pdf->download('suratjalandetail.pdf');
     }
+
+    public function fixInvoideID(){
+        $i =invoicepiutang::where('KodeInvoicePiutangShow','')->get();
+        $last_id =null;
+        foreach($i as $is){
+            $year_now = Carbon::parse($is->Tanggal)->format('y');
+            $month_now = Carbon::parse($is->Tanggal)->format('m');
+            $date_now = Carbon::parse($is->Tanggal)->format('d');
+            if ($last_id == null) {
+                $newID = "IVP-" . $year_now . $month_now . "0001";
+                $is->KodeInvoicePiutangShow = $newID;
+                $is->save();
+            } else {
+                $string = $last_id;
+                $id = substr($string, -4, 4);
+                $month = substr($string, -6, 2);
+                $year = substr($string, -8, 2);
+                if ((int) $year_now > (int) $year) {
+                    $newID = "0001";
+                } else if ((int) $month_now > (int) $month) {
+                    $newID = "0001";
+                } else {
+                    $newID = $id + 1;
+                    $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
+                }
+
+                $newID = "IVP-" . $year_now . $month_now . $newID;
+                $is->KodeInvoicePiutangShow = $newID;
+                $is->save();
+            }
+            $last_id = $newID;
+        }
+    } 
 }

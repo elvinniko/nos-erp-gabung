@@ -11,27 +11,23 @@
                         <table class="table table-light">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Kode Pelanggan</th>
-                                    <th>Status</th>
-                                    <th>Keterangan</th>
-                                    <th>Kode User</th>
-                                    <th>Kode Lokasi</th>
-                                    <th>Term</th>
+                                    <th>Pelanggan</th>
+                                    <th>No Tagihan</th>
+                                    <th>Tanggal</th>
                                     <th>Total</th>
+                                    <th>Total Bayar</th>
+                                    <th>Selisih</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($invoice as $stokmasuk)
                                     <tr>
+                                        <td>{{ $stokmasuk->NamaPelanggan}}</td>
+                                        <td>{{ $stokmasuk->KodeInvoicePiutangShow}}</td>
                                         <td>{{ $stokmasuk->Tanggal}}</td>
-                                        <td>{{ $stokmasuk->KodePelanggan}}</td>
-                                        <td>{{ $stokmasuk->Status}}</td>
-                                        <td>{{ $stokmasuk->Keterangan}}</td>
-                                        <td>{{ $stokmasuk->KodeUser}}</td>
-                                        <td>{{ $stokmasuk->KodeLokasi}}</td>
-                                        <td>{{ $stokmasuk->Term}}</td>
-                                        <td>{{ $stokmasuk->Total}}</td>
+                                        <td>{{ $stokmasuk->Subtotal}}</td>
+                                        <td>{{ $stokmasuk->bayar}}</td>
+                                        <td>{{ $stokmasuk->selisih}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
