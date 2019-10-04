@@ -107,6 +107,11 @@
                         <li><a href="{{ url('/invoicepiutang') }}">Invoice Piutang </a></li>
                       </ul>
                     </li>
+                    <li><a>Pelunasan<span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ url('/pelunasanpiutang') }}">Pelunasan Piutang </a></li>
+                      </ul>
+                    </li>
                   </ul>
                 </li>
 

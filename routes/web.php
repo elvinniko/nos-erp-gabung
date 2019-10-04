@@ -202,6 +202,11 @@ Route::post('/kartustok/filter','KartuStokController@filter');
 Route::post('/kartustok/print','KartuStokController@print');
 Route::get('/invoicepiutang','InvoiceController@piutang');
 Route::get('/fixinvoicepiutang','SuratJalanController@fixInvoideID');
+Route::get('/pelunasanpiutang','PelunasanController@index');
+Route::get('/pelunasanpiutang/invoice/{id}','PelunasanController@invoice');
+Route::get('/pelunasanpiutang/payment/{id}','PelunasanController@payment');
+Route::get('/pelunasanpiutang/payment/{id}/add','PelunasanController@addpayment');
+Route::post('/pelunasanpiutang/payment/{id}/add','PelunasanController@addpaymentpost');
 // route buat semua controller
 // Route::resource('lokasi', 'DataGudangController');
 // Route::resource('item', 'DataItemController');

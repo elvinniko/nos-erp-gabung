@@ -13,4 +13,9 @@ class invoicepiutangdetail extends Model
     {
         return $this->belongsTo('App\invoicepiutang','KodeInvoicePiutang','KodeInvoicePiutang');
     }
+
+    public function sj()
+    {
+        return $this->hasOne('App\suratjalan','KodeSuratJalanID','KodeSuratJalan');
+    }
 }

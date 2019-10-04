@@ -231,7 +231,7 @@ class SuratJalanController extends Controller
         $lastID =DB::table('invoicepiutangs')->insertGetId([
             'Tanggal' => $data->Tanggal,
             'KodePelanggan' => $data->KodePelanggan,
-            'Status' => 'OPN',
+            'Status' => 'CFM',
             'Total' => $so->Total,
             'Keterangan' => $so->keterangan,
             'KodeMataUang' => $data->KodeMataUang,

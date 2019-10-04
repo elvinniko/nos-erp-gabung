@@ -5,29 +5,28 @@
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h1>Invoice Piutang</h1><br>
+                        <h1>Pelunasan Piutang</h1><br>
                     </div>
                     <div class="x_body">
+                        @if($invoice->sisa >0)
+                            <a class="btn btn-primary " href="{{url('/pelunasanpiutang/payment/'.$invoice->KodeInvoicePiutang.'/add')}}">Tambah Pembayaran</a>
+                        @endif
                         <table class="table table-light">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Pelanggan</th>
                                     <th>No Tagihan</th>
                                     <th>Tanggal</th>
-                                    <th>Total</th>
                                     <th>Total Bayar</th>
-                                    <th>Selisih</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($invoice as $stokmasuk)
+                                @foreach ($payments as $payment)
                                     <tr>
-                                        <td>{{ $stokmasuk->NamaPelanggan}}</td>
-                                        <td>{{ $stokmasuk->KodeInvoicePiutangShow}}</td>
-                                        <td>{{ $stokmasuk->Tanggal}}</td>
-                                        <td>{{ $stokmasuk->Subtotal}}</td>
-                                        <td>{{ $stokmasuk->bayar}}</td>
-                                        <td>{{ $stokmasuk->Subtotal - $stokmasuk->bayar}}</td>
+                                        <td>{{ $invoice->detail->sj->pelanggan->NamaPelanggan }}</td>
+                                        <td>{{ $invoice->KodeInvoicePiutangShow}}</td>
+                                        <td>{{ $payment->Tanggal}}</td>
+                                        <td>{{ $payment->Jumlah}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
