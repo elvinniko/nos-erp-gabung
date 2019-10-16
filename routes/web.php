@@ -81,7 +81,8 @@ Route::post('/returnSuratJalan/confirm/{id}','ReturnSuratJalanController@confirm
 Route::get('/konfirmasireturnSuratJalan', 'ReturnSuratJalanController@konfirmasiSuratJalanReturn');
 
 //route penjualan langsung
-Route::get('/penjualanLangsung', 'PagesController@penjualanLangsung');
+Route::get('/penjualanLangsung', 'PenjualanLangsungController@index');
+Route::post('/penjualanLangsung/create', 'PenjualanLangsungController@create');
 //route return penjualan langsung
 Route::get('/returnPenjualanLangsung', 'PagesController@returnPenjualanLangsung');
 
