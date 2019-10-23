@@ -99,7 +99,7 @@
                     <li><a>Penjualan Langsung<span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                         <li><a href="{{ url('/penjualanLangsung') }}">Penjualan Langsung (kasir)</a></li>
-                        <li><a href="{{ url('/returnPenjualanLangsung') }}">Return Penjualan Langsung</a></li>
+                        <li><a href="{{ url('/returnPenjualanLangsung/0') }}">Return Penjualan Langsung</a></li>
                       </ul>
                     </li>
                     <li><a>Invoice<span class="fa fa-chevron-down"></span></a>
